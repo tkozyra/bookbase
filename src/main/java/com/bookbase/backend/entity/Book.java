@@ -23,14 +23,23 @@ public class Book {
 
     private String description;
 
+    private int year;
+
+    private int ratingSum;
+
+    private int ratingCount;
+
     public Book() {
     }
 
-    public Book(@NotNull @NotEmpty String title, Author author, Category category, String description) {
+    public Book(@NotNull @NotEmpty String title, Author author, Category category, String description, int year) {
         this.title = title;
         this.author = author;
         this.category = category;
         this.description = description;
+        this.year = year;
+        ratingSum = 0;
+        ratingCount = 0;
     }
 
     public String getTitle() {
@@ -47,5 +56,20 @@ public class Book {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public double getRating() {
+        Double result = ((double) ratingSum) / ((double) ratingCount);
+        result.setPrecision(1);
+        return result.doubleValue();
+    }
+
+    public void addRating(int rating) {
+        ratingSum += rating;
+        ratingCount++;
     }
 }
