@@ -3,6 +3,7 @@ package com.bookbase.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @Entity
@@ -14,17 +15,36 @@ public class Author {
 
     @NotNull
     @NotEmpty
-    private String firstname;
+    private String firstName;
 
     @NotNull
     @NotEmpty
-    private String secondname;
+    private String secondName;
 
-    public String getFirstname() {
-        return firstname;
+    @OneToMany
+    private List<Book> books;
+
+    public Author() {
     }
 
-    public String getSecondname() {
-        return secondname;
+    public Author(@NotNull @NotEmpty String firstName, @NotNull @NotEmpty String secondName) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
     }
 }
