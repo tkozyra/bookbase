@@ -3,6 +3,8 @@ package com.bookbase.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 public class Book {
@@ -20,6 +22,9 @@ public class Book {
 
     @ManyToOne
     private Category category;
+
+    @OneToOne
+    private Review review;
 
     private String description;
 
@@ -40,6 +45,7 @@ public class Book {
         this.year = year;
         ratingSum = 0;
         ratingCount = 0;
+        review = null;
     }
 
     public String getTitle() {
@@ -63,13 +69,23 @@ public class Book {
     }
 
     public double getRating() {
-        Double result = ((double) ratingSum) / ((double) ratingCount);
-        result.setPrecision(1);
-        return result.doubleValue();
+        double result = ((double) ratingSum) / ((double) ratingCount);
+        return BigDecimal.valueOf(result)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
     }
+
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
+
 }
