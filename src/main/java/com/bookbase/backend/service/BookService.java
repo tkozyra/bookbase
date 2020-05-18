@@ -53,7 +53,7 @@ public class BookService {
             bookRepository.save(book);
         }
         LOGGER.log(Level.SEVERE,
-                "Author is null. Can't save null value in the database.");
+                "Book is null. Can't save null value in the database.");
     }
 
     @PostConstruct
@@ -67,10 +67,11 @@ public class BookService {
             Random r = new Random(0);
             List<Category> categories = categoryRepository.findAll();
             bookRepository.saveAll(
-                    Stream.of("Jak zostałem skoczkiem narciarskim", "Wprowadzenie do algorytmów", "Los Pollos Hermanos")
+                    Stream.of("Na następnych zawodach cię pokonam", "Wprowadzenie do algorytmów", "Los Pollos Hermanos")
                             .map(name -> {
                                         Book book = new Book();
                                         book.setTitle(name);
+                                        book.setYear(r.nextInt()%20 + 2001);
                                         book.setCategory(categories.get(r.nextInt()%2));
                                         return book;
                             })
