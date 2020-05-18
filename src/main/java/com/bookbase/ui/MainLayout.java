@@ -1,7 +1,7 @@
 package com.bookbase.ui;
 
-import com.bookbase.ui.views.AuthorsView;
-import com.bookbase.ui.views.BooksView;
+import com.bookbase.ui.views.authors.AuthorsView;
+import com.bookbase.ui.views.books.BooksView;
 import com.bookbase.ui.views.home.HomeView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;

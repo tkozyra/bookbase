@@ -1,4 +1,4 @@
-package com.bookbase.ui.views;
+package com.bookbase.ui.views.books;
 
 import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.entity.Book;
