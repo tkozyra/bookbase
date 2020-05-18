@@ -9,9 +9,14 @@ import com.bookbase.backend.repository.CategoryRepository;
 import com.bookbase.backend.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class BookService {
@@ -49,5 +54,43 @@ public class BookService {
         }
         LOGGER.log(Level.SEVERE,
                 "Author is null. Can't save null value in the database.");
+    }
+
+    @PostConstruct
+    public void populateTestData() {
+        if (categoryRepository.count() == 0){
+            categoryRepository.saveAll(
+                    Stream.of("Informatyka", "Przygoda życia")
+                    .map(Category::new).collect(Collectors.toList()));
+        }
+        if (bookRepository.count() == 0) {
+            Random r = new Random(0);
+            List<Category> categories = categoryRepository.findAll();
+            bookRepository.saveAll(
+                    Stream.of("Jak zostałem skoczkiem narciarskim", "Wprowadzenie do algorytmów", "Los Pollos Hermanos")
+                            .map(name -> {
+                                        Book book = new Book();
+                                        book.setTitle(name);
+                                        book.setCategory(categories.get(r.nextInt()%2));
+                                        return book;
+                            })
+                            .collect(Collectors.toList()));
+        }
+        if (authorRepository.count() == 0) {
+            List<Book> books = bookRepository.findAll();
+            List<Author> authors = new ArrayList<>();
+            Author author1 = new Author("Janne", "Ahonnen");
+            author1.addBook(books.get(0));
+            books.get(0).setAuthor(author1);
+            authors.add(author1);
+            Author author2 = new Author("Garek", "Cormen");
+            authors.add(author2);
+            books.get(1).setAuthor(author2);
+            Author author3 = new Author("Alejandro", "McDonald");
+            authors.add(author3);
+            books.get(2).setAuthor(author3);
+            authorRepository.saveAll(authors);
+            bookRepository.saveAll(books);
+        }
     }
 }

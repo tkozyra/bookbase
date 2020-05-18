@@ -32,9 +32,9 @@ public class Book {
 
     private int year;
 
-    private int ratingSum;
+    private int ratingSum = 0;
 
-    private int ratingCount;
+    private int ratingCount = 0;
 
     public Book() {
     }
@@ -45,8 +45,6 @@ public class Book {
         this.category = category;
         this.description = description;
         this.year = year;
-        ratingSum = 0;
-        ratingCount = 0;
         reviewList = new ArrayList<>();
     }
 
@@ -71,16 +69,35 @@ public class Book {
     }
 
     public double getRating() {
-        double result = ((double) ratingSum) / ((double) ratingCount);
-        return BigDecimal.valueOf(result)
-                .setScale(2, RoundingMode.HALF_UP)
-                .doubleValue();
+        //        return BigDecimal.valueOf(result)
+//                .setScale(2, RoundingMode.HALF_UP)
+//                .doubleValue();
+        return ((double) ratingSum) / ((double) ratingCount);
     }
 
     public List<Review> getReviewList() {
         return reviewList;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     private void addRating(double rating) {
         ratingSum += rating;
