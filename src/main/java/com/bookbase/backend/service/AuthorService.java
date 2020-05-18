@@ -2,6 +2,7 @@ package com.bookbase.backend.service;
 
 import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.repository.AuthorRepository;
+import com.bookbase.backend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,10 @@ public class AuthorService {
     private static final Logger LOGGER = Logger.getLogger(AuthorService.class.getName());
 
     private AuthorRepository authorRepository;
+    private BookRepository bookRepository;
 
-    public AuthorService(AuthorRepository authorRepository) {
+    public AuthorService(AuthorRepository authorRepository, BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
     }
 
@@ -32,11 +35,11 @@ public class AuthorService {
     }
 
     public void save(Author author){
-        if(author == null){
-            LOGGER.log(Level.SEVERE,
-                    "Author is null. Can't save null value in the database.");
+        if (author != null) {
+            authorRepository.save(author);
         }
-        authorRepository.save(author);
+        LOGGER.log(Level.SEVERE,
+                "Author is null. Can't save null value in the database.");
     }
 
 }

@@ -5,6 +5,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Book {
@@ -23,8 +25,8 @@ public class Book {
     @ManyToOne
     private Category category;
 
-    @OneToOne
-    private Review review;
+    @OneToMany
+    private List<Review> reviewList;
 
     private String description;
 
@@ -45,7 +47,7 @@ public class Book {
         this.year = year;
         ratingSum = 0;
         ratingCount = 0;
-        review = null;
+        reviewList = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -75,17 +77,18 @@ public class Book {
                 .doubleValue();
     }
 
-    public void addRating(int rating) {
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+
+    private void addRating(double rating) {
         ratingSum += rating;
         ratingCount++;
     }
-
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
+    public void addReview(Review review) {
+        this.reviewList.add(review);
+        this.addRating(review.getRating());
     }
 
 }

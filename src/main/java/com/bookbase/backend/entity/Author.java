@@ -3,6 +3,7 @@ package com.bookbase.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +31,7 @@ public class Author {
     public Author(@NotNull @NotEmpty String firstName, @NotNull @NotEmpty String secondName) {
         this.firstName = firstName;
         this.secondName = secondName;
+        this.books = new ArrayList<>();
     }
 
     public String getFirstName() {
