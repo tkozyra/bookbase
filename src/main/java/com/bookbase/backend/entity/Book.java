@@ -71,6 +71,8 @@ public class Book {
     }
 
     public double getRating() {
+        if(ratingCount == 0)
+            return 0;
         double result = ((double) ratingSum) / ((double) ratingCount);
         return BigDecimal.valueOf(result)
                 .setScale(2, RoundingMode.HALF_UP)
@@ -82,12 +84,14 @@ public class Book {
     }
 
 
-    private void addRating(double rating) {
+    private void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
     }
+
     public void addReview(Review review) {
         this.reviewList.add(review);
+        this.author.addRating(review.getRating());
         this.addRating(review.getRating());
     }
 

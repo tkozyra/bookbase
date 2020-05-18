@@ -20,14 +20,14 @@ public class Review {
 
     @NotEmpty
     @NotNull
-    private double rating;
+    private int rating;
 
     private String contents;
 
     public Review(){
     }
 
-    public Review(Book book, @NotEmpty @NotNull String nickname, String contents, @NotEmpty @NotNull double rating) {
+    public Review(Book book, @NotEmpty @NotNull String nickname, String contents, @NotEmpty @NotNull int rating) {
         this.book = book;
         this.nickname = nickname;
         this.contents = contents;
@@ -45,7 +45,7 @@ public class Review {
         return nickname;
     }
 
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
