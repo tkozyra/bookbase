@@ -11,7 +11,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reviewID;
 
-    @OneToOne
+    @ManyToOne
     private Book book;
 
     @NotEmpty
@@ -33,6 +33,9 @@ public class Review {
         this.contents = contents;
         this.rating = rating;
     }
+    public void addReviewToBook(){
+        this.book.addReview(this);
+    }
 
     public Book getBook() {
         return book;
@@ -45,6 +48,7 @@ public class Review {
     public double getRating() {
         return rating;
     }
+
     public String getContents() {
         return contents;
     }

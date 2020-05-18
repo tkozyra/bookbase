@@ -3,6 +3,7 @@ package com.bookbase.backend.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,7 @@ public class Category {
     }
 
     public Category(@NotEmpty @NotNull String name) {
+        this.books = new ArrayList<>();
         this.name = name;
     }
 
