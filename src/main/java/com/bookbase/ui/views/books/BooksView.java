@@ -5,33 +5,92 @@ import com.bookbase.backend.entity.Book;
 import com.bookbase.backend.entity.Category;
 import com.bookbase.backend.service.BookService;
 import com.bookbase.ui.MainLayout;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route(value = "Books", layout = MainLayout.class)
 @PageTitle("Books | Bookbase")
+@CssImport("./styles/shared-styles.css")
 public class BooksView extends VerticalLayout {
 
     private Grid<Book> grid = new Grid<>(Book.class);
+    private TextField filterText = new TextField();
     private BookService bookService;
+    private final BookForm form;
+
+    Paragraph title = new Paragraph();
+    Paragraph author = new Paragraph();
 
     public BooksView(BookService bookService){
         this.bookService = bookService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
+        configureFilter();
+
+        form = new BookForm();
+        form.addListener(BookForm.SaveEvent.class, this::saveBook);
+        form.addListener(BookForm.DeleteEvent.class, this::deleteBook);
+        form.addListener(BookForm.CloseEvent.class, event -> closeEditor());
+
+        Div content = new Div(grid, form);
+        content.addClassName("content");
+        content.setSizeFull();
+
         add(
                 new H1("Books"),
-                grid
+                filterText,
+                content
         );
         updateList();
+        closeEditor();
+    }
+
+    private void saveBook(BookForm.SaveEvent event){
+        bookService.save(event.getBook());
+        updateList();
+        closeEditor();
+    }
+
+    private void deleteBook(BookForm.DeleteEvent event){
+        bookService.delete(event.getBook());
+        updateList();
+        closeEditor();
+    }
+
+    private void closeEditor(){
+        form.setBook(null);
+        form.setVisible(false);
+        removeClassName("editing");
+    }
+
+    private void editBook(Book book){
+        if (book == null){
+            closeEditor();
+        } else{
+            form.setBook(book);
+            form.setVisible(true);
+            addClassName("editing");
+        }
     }
 
     private void updateList() {
         grid.setItems(bookService.findAll());
+    }
+
+    private void configureFilter() {
+        filterText.setPlaceholder("Filter by title");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
     }
 
     private void configureGrid() {
@@ -57,7 +116,9 @@ public class BooksView extends VerticalLayout {
                 return category.getName();
             }
         }).setHeader("Category");
-
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(event -> editBook(event.getValue()));
+
     }
 }
