@@ -83,12 +83,30 @@ public class Book {
         return reviewList;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     private void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
     }
-
     public void addReview(Review review) {
         this.reviewList.add(review);
         this.author.addRating(review.getRating());

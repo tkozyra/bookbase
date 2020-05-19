@@ -68,6 +68,14 @@ public class Author {
         books.add(book);
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
     public void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
