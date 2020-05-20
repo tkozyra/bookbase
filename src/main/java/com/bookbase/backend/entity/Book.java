@@ -106,7 +106,9 @@ public class Book {
     private void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
+        author.addRating(rating);
     }
+
     public void addReview(Review review) {
         this.reviewList.add(review);
         this.author.addRating(review.getRating());

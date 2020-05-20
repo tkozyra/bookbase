@@ -80,14 +80,14 @@ public class BookService {
         if (authorRepository.count() == 0) {
             List<Book> books = bookRepository.findAll();
             List<Author> authors = new ArrayList<>();
-            Author author1 = new Author("Janne", "Ahonnen");
+            Author author1 = new Author("Janne", "Ahonnen", 1969);
             author1.addBook(books.get(0));
             books.get(0).setAuthor(author1);
             authors.add(author1);
-            Author author2 = new Author("Garek", "Cormen");
+            Author author2 = new Author("Garek", "Cormen", 1954);
             authors.add(author2);
             books.get(1).setAuthor(author2);
-            Author author3 = new Author("Alejandro", "McDonald");
+            Author author3 = new Author("Alejandro", "McDonald", 2010);
             authors.add(author3);
             books.get(2).setAuthor(author3);
             authorRepository.saveAll(authors);

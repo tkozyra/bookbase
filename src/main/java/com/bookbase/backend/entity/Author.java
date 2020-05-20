@@ -24,6 +24,8 @@ public class Author {
     @NotEmpty
     private String secondName;
 
+    private int birthYear;
+
     @OneToMany
     private List<Book> books;
 
@@ -35,9 +37,10 @@ public class Author {
     }
 
     public Author(@NotNull @NotEmpty String firstName,
-                  @NotNull @NotEmpty String secondName) {
+                  @NotNull @NotEmpty String secondName, int birthYear) {
         this.firstName = firstName;
         this.secondName = secondName;
+        this.birthYear = birthYear;
         this.books = new ArrayList<>();
         ratingSum = 0;
         ratingCount = 0;
@@ -49,6 +52,10 @@ public class Author {
 
     public String getSecondName() {
         return secondName;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
     }
 
     public double getRating() {
@@ -76,20 +83,24 @@ public class Author {
         this.secondName = secondName;
     }
 
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
     public void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
     }
 
-    public Book getBestBook() {
-        if(books.isEmpty())
-            return null;
-        else {
-            Book best = books.get(0);
-            for (Book book : books)
-                if(book.getRating() > best.getRating())
-                    best = book;
-            return best;
-        }
-    }
+//    public String getBestBookTitle() {
+//        if(books.isEmpty())
+//            return null;
+//        else {
+//            Book best = books.get(0);
+//            for (Book book : books)
+//                if(book.getRating() > best.getRating())
+//                    best = book;
+//            return best.getTitle();
+//        }
+//    }
 }
