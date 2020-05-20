@@ -3,6 +3,8 @@ package com.bookbase.ui.views.authors;
 import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.service.AuthorService;
 import com.bookbase.ui.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -16,23 +18,23 @@ import com.vaadin.flow.router.Route;
 
 import java.util.Calendar;
 
+
 @Route(value = "Authors", layout = MainLayout.class)
 @PageTitle("Authors | Bookbase")
 @CssImport("./styles/shared-styles.css")
 public class AuthorsView extends VerticalLayout {
 
-    private TextField filterFirstName = new TextField();
-    private TextField filterSecondName = new TextField();
+    private final TextField filterFirstName = new TextField();
+    private final TextField filterSecondName = new TextField();
     private final AuthorForm authorForm;
-    private Grid<Author> grid = new Grid<>(Author.class);
-    private AuthorService authorService;
+    private final Grid<Author> grid = new Grid<>(Author.class);
+    private final AuthorService authorService;
 
     public AuthorsView(AuthorService authorService){
         this.authorService = authorService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
-        HorizontalLayout filters = configureFilters();
 
         authorForm = new AuthorForm();
         authorForm.addListener(AuthorForm.SaveEvent.class, this::saveAuthor);
@@ -45,23 +47,32 @@ public class AuthorsView extends VerticalLayout {
 
         add(
                 new H1("Authors"),
-                filters,
+                getToolBar(),
                 content
         );
         updateList();
         closeForm();
     }
 
-    private HorizontalLayout configureFilters() {
-        filterFirstName.setPlaceholder("First name");
-        filterSecondName.setPlaceholder("Second name");
+    private HorizontalLayout getToolBar() {
+        filterFirstName.setPlaceholder("Filter by first name");
+        filterSecondName.setPlaceholder("Filter by second name");
         filterFirstName.setClearButtonVisible(true);
         filterSecondName.setClearButtonVisible(true);
         filterFirstName.setValueChangeMode(ValueChangeMode.LAZY);
         filterSecondName.setValueChangeMode(ValueChangeMode.LAZY);
         filterFirstName.addValueChangeListener(e -> updateList());
         filterSecondName.addValueChangeListener(e -> updateList());
-        return new HorizontalLayout(filterFirstName, filterSecondName);
+
+        Button addAuthorButton = new Button("Add new author", buttonClickEvent -> addAuthor());
+        addAuthorButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        return new HorizontalLayout(filterFirstName, filterSecondName, addAuthorButton);
+    }
+
+    private void addAuthor() {
+        grid.asSingleSelect().clear();
+        editAuthor(new Author());
     }
 
     private void deleteAuthor(AuthorForm.DeleteEvent deleteEvent) {
