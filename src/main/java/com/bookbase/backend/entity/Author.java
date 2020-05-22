@@ -54,6 +54,10 @@ public class Author {
         return secondName;
     }
 
+    public String getFullName(){
+        return firstName + " " + secondName;
+    }
+
     public int getBirthYear() {
         return birthYear;
     }

@@ -1,12 +1,15 @@
 package com.bookbase.ui.views.books;
 
+import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.entity.Book;
+import com.bookbase.backend.entity.Category;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -16,14 +19,16 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
+import java.util.List;
+
 public class BookForm extends FormLayout {
 
 
-    private TextField title = new TextField("title");
-//    TextField author = new TextField("author");
-//    TextField category = new TextField("category");
-    private TextArea description = new TextArea("description");
-    private IntegerField year = new IntegerField("year");
+    private TextField title = new TextField("Title");
+    private ComboBox<Author> author = new ComboBox<>("Author");
+    private ComboBox<Category> category = new ComboBox<>("Category");
+    private TextArea description = new TextArea("Description");
+    private IntegerField year = new IntegerField("Year");
 
     private Button save = new Button("save");
     private Button delete = new Button("delete");
@@ -31,16 +36,22 @@ public class BookForm extends FormLayout {
 
     private Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
-    public BookForm(){
+    public BookForm(List<Author> authors, List<Category> categories){
         addClassName("book-form");
 
         binder.bindInstanceFields(this);
 
+        author.setItems(authors);
+        author.setItemLabelGenerator(Author::getFullName);
+
+        category.setItems(categories);
+        category.setItemLabelGenerator(Category::getName);
+
         add(
                 title,
-//                author,
-//                category,
+                author,
                 description,
+                category,
                 year,
                 createButtonsLayout()
         );

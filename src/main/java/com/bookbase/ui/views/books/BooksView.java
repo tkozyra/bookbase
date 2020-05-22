@@ -3,13 +3,18 @@ package com.bookbase.ui.views.books;
 import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.entity.Book;
 import com.bookbase.backend.entity.Category;
+import com.bookbase.backend.service.AuthorService;
 import com.bookbase.backend.service.BookService;
+import com.bookbase.backend.service.CategoryService;
 import com.bookbase.ui.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -23,20 +28,26 @@ public class BooksView extends VerticalLayout {
 
     private Grid<Book> grid = new Grid<>(Book.class);
     private TextField filterText = new TextField();
+
     private BookService bookService;
+    private AuthorService authorService;
+    private CategoryService categoryService;
+
     private final BookForm form;
 
     Paragraph title = new Paragraph();
     Paragraph author = new Paragraph();
 
-    public BooksView(BookService bookService){
+    public BooksView(BookService bookService, AuthorService authorService, CategoryService categoryService){
         this.bookService = bookService;
+        this.authorService = authorService;
+        this.categoryService = categoryService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
         configureFilter();
 
-        form = new BookForm();
+        form = new BookForm(authorService.findAll(), categoryService.findAll());
         form.addListener(BookForm.SaveEvent.class, this::saveBook);
         form.addListener(BookForm.DeleteEvent.class, this::deleteBook);
         form.addListener(BookForm.CloseEvent.class, event -> closeEditor());
@@ -47,11 +58,25 @@ public class BooksView extends VerticalLayout {
 
         add(
                 new H1("Books"),
-                filterText,
+                getToolBar(),
                 content
         );
         updateList();
         closeEditor();
+    }
+
+    private HorizontalLayout getToolBar() {
+        configureFilter();
+
+        Button bookButton = new Button("Add new book", buttonClickEvent -> addBook());
+        bookButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        return new HorizontalLayout(filterText, bookButton);
+    }
+
+    private void addBook() {
+        grid.asSingleSelect().clear();
+        editBook(new Book());
     }
 
     private void saveBook(BookForm.SaveEvent event){
