@@ -1,6 +1,5 @@
 package com.bookbase.backend.service;
 
-import com.bookbase.backend.entity.Category;
 import com.bookbase.backend.entity.Review;
 import com.bookbase.backend.repository.BookRepository;
 import com.bookbase.backend.repository.ReviewRepository;
@@ -42,4 +41,19 @@ public class ReviewService {
         LOGGER.log(Level.SEVERE,
                 "Author is null. Can't save null value in the database.");
     }
+//    @PostConstruct
+//    public void populateTestData() {
+//        if (reviewRepository.count() == 0 && bookRepository.findAll() != null) {
+//            List<Book> books = bookRepository.findAll();
+////            List<Review> reviews = new ArrayList<>();
+//            for (Book book : books) {
+//                int i = books.indexOf(book);
+//                Review review = new Review(book, "user" + i, "some review number " + i, i % 5 + 1);
+////                reviews.add(review);
+//                save(review);
+//                review.addReviewToBook();
+//            }
+////            reviewRepository.saveAll(reviews);
+//        }
+//    }
 }

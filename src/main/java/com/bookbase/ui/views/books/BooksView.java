@@ -111,11 +111,13 @@ public class BooksView extends VerticalLayout {
         grid.setItems(bookService.findAll());
     }
 
+    private void updateListByName() {grid.setItems(bookService.findAll(filterText.getValue()));}
+
     private void configureFilter() {
         filterText.setPlaceholder("Filter by title");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
+        filterText.addValueChangeListener(e -> updateListByName());
     }
 
     private void configureGrid() {

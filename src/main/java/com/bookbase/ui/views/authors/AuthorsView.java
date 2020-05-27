@@ -61,8 +61,8 @@ public class AuthorsView extends VerticalLayout {
         filterSecondName.setClearButtonVisible(true);
         filterFirstName.setValueChangeMode(ValueChangeMode.LAZY);
         filterSecondName.setValueChangeMode(ValueChangeMode.LAZY);
-        filterFirstName.addValueChangeListener(e -> updateList());
-        filterSecondName.addValueChangeListener(e -> updateList());
+        filterFirstName.addValueChangeListener(e -> updateListFirstName());
+        filterSecondName.addValueChangeListener(e -> updateListSecondName());
 
         Button addAuthorButton = new Button("Add new author", buttonClickEvent -> addAuthor());
         addAuthorButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -107,6 +107,7 @@ public class AuthorsView extends VerticalLayout {
         grid.addClassName("author-grid");
         grid.setSizeFull();
         grid.removeColumnByKey("books");
+        grid.removeColumnByKey("fullName");
 //        grid.removeColumnByKey("Best Book");
         grid.removeColumnByKey("rating");
         grid.removeColumnByKey("birthYear");
@@ -143,4 +144,8 @@ public class AuthorsView extends VerticalLayout {
     private void updateList() {
         grid.setItems(authorService.findAll());
     }
+
+    private void updateListFirstName() { grid.setItems(authorService.findAllByFirstName(filterFirstName.getValue()));}
+
+    private void updateListSecondName() { grid.setItems(authorService.findAllBySecondName(filterSecondName.getValue()));}
 }

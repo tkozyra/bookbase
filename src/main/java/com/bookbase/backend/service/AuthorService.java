@@ -5,6 +5,7 @@ import com.bookbase.backend.repository.AuthorRepository;
 import com.bookbase.backend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,26 @@ public class AuthorService {
 
     public List<Author> findAll(){
         return authorRepository.findAll();
+    }
+
+    public List<Author> findAllByFirstName(String filter) {
+        List<Author> authors = this.findAll();
+        List<Author> result = new ArrayList<>();
+        for (Author author : authors) {
+            if(author.getFirstName().toLowerCase().contains(filter.toLowerCase()))
+                result.add(author);
+        }
+        return result;
+    }
+
+    public List<Author> findAllBySecondName(String filter) {
+        List<Author> authors = this.findAll();
+        List<Author> result = new ArrayList<>();
+        for (Author author : authors) {
+            if(author.getSecondName().toLowerCase().contains(filter.toLowerCase()))
+                result.add(author);
+        }
+        return result;
     }
 
     public long count(){

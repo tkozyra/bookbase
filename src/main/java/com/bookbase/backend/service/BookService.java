@@ -40,6 +40,15 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<Book> findAll(String filter) {
+        List<Book> books = this.findAll();
+        List<Book> result = new ArrayList<>();
+        for (Book book : books)
+            if(book.getTitle().toLowerCase().contains(filter.toLowerCase()))
+                result.add(book);
+        return result;
+    }
+
     public long count(){
         return bookRepository.count();
     }
@@ -73,6 +82,7 @@ public class BookService {
                                         book.setTitle(name);
                                         book.setYear(r.nextInt()%20 + 2001);
                                         book.setCategory(categories.get(r.nextInt()%2));
+//                                        book.addReview(new Review(book, "user" + r.nextInt() % 3, "some review number " + r.nextInt() % 10, r.nextInt() % 5 + 1));
                                         return book;
                             })
                             .collect(Collectors.toList()));
@@ -93,5 +103,17 @@ public class BookService {
             authorRepository.saveAll(authors);
             bookRepository.saveAll(books);
         }
+//        if (reviewRepository.count() == 0) {
+//            List<Book> books = bookRepository.findAll();
+//            List<Review> reviews = new ArrayList<>();
+//            for (Book book : books) {
+//                int i = books.indexOf(book);
+//                Review review = new Review(book, "user" + i, "some review number " + i, i % 5 + 1);
+//                reviews.add(review);
+//                review.addReviewToBook();
+//            }
+//            reviewRepository.saveAll(reviews);
+//            bookRepository.saveAll(books);
+//        }
     }
 }
