@@ -40,6 +40,24 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<Book> findAll(Category category) {
+        List<Book> result = new ArrayList<>();
+        findAll().forEach(book -> {
+            if (book.getCategory().equals(category))
+                result.add(book);
+        });
+        return result;
+    }
+
+    public List<Book> findAll(Author author) {
+        List<Book> result = new ArrayList<>();
+        findAll().forEach(book -> {
+            if (book.getAuthor().equals(author))
+                result.add(book);
+        });
+        return result;
+    }
+
     public List<Book> findAll(String filter) {
         List<Book> books = this.findAll();
         List<Book> result = new ArrayList<>();

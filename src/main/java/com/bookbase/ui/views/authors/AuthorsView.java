@@ -1,7 +1,11 @@
 package com.bookbase.ui.views.authors;
 
 import com.bookbase.backend.entity.Author;
+import com.bookbase.backend.entity.Book;
+import com.bookbase.backend.entity.Category;
 import com.bookbase.backend.service.AuthorService;
+import com.bookbase.backend.service.BookService;
+import com.bookbase.backend.service.CategoryService;
 import com.bookbase.ui.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -9,14 +13,20 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 @Route(value = "Authors", layout = MainLayout.class)
@@ -29,9 +39,14 @@ public class AuthorsView extends VerticalLayout {
     private final AuthorForm authorForm;
     private final Grid<Author> grid = new Grid<>(Author.class);
     private final AuthorService authorService;
+    private final BookService bookService;
+    private final CategoryService categoryService;
+    private final Select<Category> categorySelect = new Select<>();
 
-    public AuthorsView(AuthorService authorService){
+    public AuthorsView(AuthorService authorService, BookService bookService, CategoryService categoryService){
         this.authorService = authorService;
+        this.bookService = bookService;
+        this.categoryService = categoryService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
@@ -64,10 +79,23 @@ public class AuthorsView extends VerticalLayout {
         filterFirstName.addValueChangeListener(e -> updateListFirstName());
         filterSecondName.addValueChangeListener(e -> updateListSecondName());
 
+        categorySelect.setPlaceholder("select category");
+        categorySelect.addValueChangeListener(e -> updateList(categorySelect.getValue()));
+        categorySelect.setItemLabelGenerator(Category::getName);
+        categorySelect.setItems(categoryService.findAll());
+        categorySelect.addDetachListener(e -> updateList());
+
+//        Button clearButton = new Button(new Icon(VaadinIcon.EXIT_O), buttonClickEvent -> {
+//            updateList();
+//            categorySelect.clear();
+//        });
+        Button clearButton = new Button("X", buttonClickEvent -> updateList());
+        clearButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
         Button addAuthorButton = new Button("Add new author", buttonClickEvent -> addAuthor());
         addAuthorButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        return new HorizontalLayout(filterFirstName, filterSecondName, addAuthorButton);
+        return new HorizontalLayout(filterFirstName, filterSecondName, categorySelect, clearButton, addAuthorButton);
     }
 
     private void addAuthor() {
@@ -125,15 +153,20 @@ public class AuthorsView extends VerticalLayout {
         }).setHeader("Average rating");
 
 
-//        grid.addColumn(author ->  {
-//            String best = author.getBestBookTitle();
-//            if(best == null)
-//                return "-";
-//            else
-//                return best;
-//        }).setHeader("Best book");
+        grid.addColumn(author ->  {
+            List<Book> books = bookService.findAll(author);
+            if(books.size() == 0)
+                return "-";
+            else {
+                Book best = books.get(0);
+                for (Book book : books) {
+                    if (book.getRating() > best.getRating())
+                        best = book;
+                }
+                return best.getTitle();
+            }
+        }).setHeader("Best book");
 
-//        grid.asSingleSelect().addValueChangeListener(event -> editAuthor(event.getValue()));
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -141,7 +174,17 @@ public class AuthorsView extends VerticalLayout {
     }
 
     private void updateList() {
+        categorySelect.clear();
         grid.setItems(authorService.findAll());
+    }
+
+    private void updateList(Category value) {
+        List<Author> authors = new ArrayList<>();
+        bookService.findAll(value).forEach(book -> {
+            if(!authors.contains(book.getAuthor()))
+                authors.add(book.getAuthor());
+        });
+        grid.setItems(authors);
     }
 
     private void updateListFirstName() { grid.setItems(authorService.findAllByFirstName(filterFirstName.getValue()));}

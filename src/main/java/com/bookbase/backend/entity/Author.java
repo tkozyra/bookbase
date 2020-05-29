@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -84,15 +85,21 @@ public class Author {
         ratingCount++;
     }
 
-//    public String getBestBookTitle() {
-//        if(books.isEmpty())
-//            return null;
-//        else {
-//            Book best = books.get(0);
-//            for (Book book : books)
-//                if(book.getRating() > best.getRating())
-//                    best = book;
-//            return best.getTitle();
-//        }
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return authorID == author.authorID &&
+                birthYear == author.birthYear &&
+                ratingSum == author.ratingSum &&
+                ratingCount == author.ratingCount &&
+                firstName.equals(author.firstName) &&
+                secondName.equals(author.secondName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(authorID, firstName, secondName, birthYear, ratingSum, ratingCount);
+    }
 }
