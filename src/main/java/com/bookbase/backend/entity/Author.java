@@ -26,9 +26,6 @@ public class Author {
 
     private int birthYear;
 
-    @OneToMany
-    private List<Book> books;
-
     private int ratingSum;
 
     private int ratingCount;
@@ -41,7 +38,6 @@ public class Author {
         this.firstName = firstName;
         this.secondName = secondName;
         this.birthYear = birthYear;
-        this.books = new ArrayList<>();
         ratingSum = 0;
         ratingCount = 0;
     }
@@ -69,14 +65,6 @@ public class Author {
         return BigDecimal.valueOf(rating)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void addBook(Book book) {
-        books.add(book);
     }
 
     public void setFirstName(String firstName) {

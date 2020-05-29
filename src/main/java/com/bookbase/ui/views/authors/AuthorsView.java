@@ -106,7 +106,6 @@ public class AuthorsView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("author-grid");
         grid.setSizeFull();
-        grid.removeColumnByKey("books");
         grid.removeColumnByKey("fullName");
 //        grid.removeColumnByKey("Best Book");
         grid.removeColumnByKey("rating");
