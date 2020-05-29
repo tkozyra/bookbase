@@ -49,6 +49,10 @@ public class BookService {
         return result;
     }
 
+    public Book findBookByTitle(String title){
+        return bookRepository.findBookByTitle(title);
+    }
+
     public long count(){
         return bookRepository.count();
     }
@@ -91,7 +95,7 @@ public class BookService {
             List<Book> books = bookRepository.findAll();
             List<Author> authors = new ArrayList<>();
             Author author1 = new Author("Janne", "Ahonnen", 1969);
-            author1.addBook(books.get(0));
+//            author1.addBook(books.get(0));
             books.get(0).setAuthor(author1);
             authors.add(author1);
             Author author2 = new Author("Garek", "Cormen", 1954);

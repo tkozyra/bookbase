@@ -35,8 +35,13 @@ public class BooksView extends VerticalLayout {
 
     private final BookForm form;
 
-    Paragraph title = new Paragraph();
-    Paragraph author = new Paragraph();
+    private Paragraph title = new Paragraph("");
+    private Paragraph author = new Paragraph("");
+    Div details;
+//    Button buttonHideBookDetails = new Button("close");
+//    VerticalLayout details = new VerticalLayout(title, author, buttonHideBookDetails);
+
+
 
     public BooksView(BookService bookService, AuthorService authorService, CategoryService categoryService){
         this.bookService = bookService;
@@ -52,18 +57,31 @@ public class BooksView extends VerticalLayout {
         form.addListener(BookForm.DeleteEvent.class, this::deleteBook);
         form.addListener(BookForm.CloseEvent.class, event -> closeEditor());
 
-        Div content = new Div(grid, form);
+        Div details = new Div(title, author);
+
+        details.addClassName("book-details");
+        Div content = new Div(grid, form, details);
         content.addClassName("content");
         content.setSizeFull();
 
         add(
                 new H1("Books"),
                 getToolBar(),
+//                getBookDetails(),
                 content
         );
         updateList();
         closeEditor();
+        closeBookDetails();
     }
+
+//    private VerticalLayout getBookDetails() {
+//        Paragraph title = new Paragraph("");
+//        Paragraph author = new Paragraph("");
+//        Button buttonHideBookDetails = new Button("close");
+//        buttonHideBookDetails.addClickListener(event -> closeBookDetails());
+//        return new VerticalLayout(title, author, buttonHideBookDetails);
+//    }
 
     private HorizontalLayout getToolBar() {
         configureFilter();
@@ -111,7 +129,9 @@ public class BooksView extends VerticalLayout {
         grid.setItems(bookService.findAll());
     }
 
-    private void updateListByName() {grid.setItems(bookService.findAll(filterText.getValue()));}
+    private void updateListByName() {
+        grid.setItems(bookService.findAll(filterText.getValue()));
+    }
 
     private void configureFilter() {
         filterText.setPlaceholder("Filter by title");
@@ -146,6 +166,19 @@ public class BooksView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> editBook(event.getValue()));
+        grid.asSingleSelect().addValueChangeListener(event -> passBookDetails(event.getValue()));
+
+    }
+
+    private void passBookDetails(Book book) {
+        if (book == null){
+            closeBookDetails();
+        } else {
+            title.setText(book.getTitle());
+        }
+    }
+
+    private void closeBookDetails(){
 
     }
 }

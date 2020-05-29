@@ -15,6 +15,12 @@
     padding: var(--lumo-space-m);
 }
 
+.list-view .book-details{
+    flex: 1;
+    padding: var(--lumo-space-m);
+}
+
+
 @media all and (max-width: 1100px) {
     .list-view.editing .toolbar,
     .list-view.editing .books-grid {
