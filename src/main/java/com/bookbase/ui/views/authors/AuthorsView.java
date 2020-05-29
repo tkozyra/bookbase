@@ -70,6 +70,27 @@ public class AuthorsView extends VerticalLayout {
     }
 
     private HorizontalLayout getToolBar() {
+        configureFilters();
+        configureSelect();
+
+        Button clearButton = new Button("X", buttonClickEvent -> updateList());
+        clearButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
+        Button addAuthorButton = new Button("Add new author", buttonClickEvent -> addAuthor());
+        addAuthorButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        return new HorizontalLayout(filterFirstName, filterSecondName, categorySelect, clearButton, addAuthorButton);
+    }
+
+    private void configureSelect() {
+        categorySelect.setPlaceholder("select category");
+        categorySelect.addValueChangeListener(e -> updateList(categorySelect.getValue()));
+        categorySelect.setItemLabelGenerator(Category::getName);
+        categorySelect.setItems(categoryService.findAll());
+        categorySelect.addDetachListener(e -> updateList());
+    }
+
+    private void configureFilters() {
         filterFirstName.setPlaceholder("Filter by first name");
         filterSecondName.setPlaceholder("Filter by second name");
         filterFirstName.setClearButtonVisible(true);
@@ -78,24 +99,6 @@ public class AuthorsView extends VerticalLayout {
         filterSecondName.setValueChangeMode(ValueChangeMode.LAZY);
         filterFirstName.addValueChangeListener(e -> updateListFirstName());
         filterSecondName.addValueChangeListener(e -> updateListSecondName());
-
-        categorySelect.setPlaceholder("select category");
-        categorySelect.addValueChangeListener(e -> updateList(categorySelect.getValue()));
-        categorySelect.setItemLabelGenerator(Category::getName);
-        categorySelect.setItems(categoryService.findAll());
-        categorySelect.addDetachListener(e -> updateList());
-
-//        Button clearButton = new Button(new Icon(VaadinIcon.EXIT_O), buttonClickEvent -> {
-//            updateList();
-//            categorySelect.clear();
-//        });
-        Button clearButton = new Button("X", buttonClickEvent -> updateList());
-        clearButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
-
-        Button addAuthorButton = new Button("Add new author", buttonClickEvent -> addAuthor());
-        addAuthorButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        return new HorizontalLayout(filterFirstName, filterSecondName, categorySelect, clearButton, addAuthorButton);
     }
 
     private void addAuthor() {

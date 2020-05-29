@@ -16,10 +16,14 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Route(value = "Books", layout = MainLayout.class)
 @PageTitle("Books | Bookbase")
@@ -40,6 +44,7 @@ public class BooksView extends VerticalLayout {
     Div details;
 //    Button buttonHideBookDetails = new Button("close");
 //    VerticalLayout details = new VerticalLayout(title, author, buttonHideBookDetails);
+    private final Select<Category> categorySelect = new Select<>();
 
 
 
@@ -85,11 +90,23 @@ public class BooksView extends VerticalLayout {
 
     private HorizontalLayout getToolBar() {
         configureFilter();
+        configureSelect();
+
+        Button clearButton = new Button("X", buttonClickEvent -> updateList());
+        clearButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         Button bookButton = new Button("Add new book", buttonClickEvent -> addBook());
         bookButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        return new HorizontalLayout(filterText, bookButton);
+        return new HorizontalLayout(filterText, categorySelect, clearButton, bookButton);
+    }
+
+    private void configureSelect() {
+        categorySelect.setPlaceholder("select category");
+        categorySelect.addValueChangeListener(e -> updateList(categorySelect.getValue()));
+        categorySelect.setItemLabelGenerator(Category::getName);
+        categorySelect.setItems(categoryService.findAll());
+        categorySelect.addDetachListener(e -> updateList());
     }
 
     private void addBook() {
@@ -126,7 +143,17 @@ public class BooksView extends VerticalLayout {
     }
 
     private void updateList() {
+        categorySelect.clear();
         grid.setItems(bookService.findAll());
+    }
+
+    private void updateList(Category value) {
+        List<Book> books = new ArrayList<>();
+        bookService.findAll().forEach(book -> {
+            if (book.getCategory().equals(value))
+                books.add(book);
+        });
+        grid.setItems(books);
     }
 
     private void updateListByName() {
