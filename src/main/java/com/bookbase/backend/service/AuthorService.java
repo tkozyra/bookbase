@@ -59,7 +59,8 @@ public class AuthorService {
         if (author != null) {
             authorRepository.save(author);
         }
-        LOGGER.log(Level.SEVERE,
+        else
+            LOGGER.log(Level.SEVERE,
                 "Author is null. Can't save null value in the database.");
     }
 

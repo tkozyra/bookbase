@@ -3,6 +3,7 @@ package com.bookbase.backend.service;
 import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.entity.Book;
 import com.bookbase.backend.entity.Category;
+import com.bookbase.backend.entity.Review;
 import com.bookbase.backend.repository.AuthorRepository;
 import com.bookbase.backend.repository.BookRepository;
 import com.bookbase.backend.repository.CategoryRepository;
@@ -83,7 +84,8 @@ public class BookService {
         if (book != null) {
             bookRepository.save(book);
         }
-        LOGGER.log(Level.SEVERE,
+        else
+            LOGGER.log(Level.SEVERE,
                 "Book is null. Can't save null value in the database.");
     }
 

@@ -38,7 +38,8 @@ public class CategoryService {
         if (category != null) {
             categoryRepository.save(category);
         }
-        LOGGER.log(Level.SEVERE,
-                "Author is null. Can't save null value in the database.");
+        else
+            LOGGER.log(Level.SEVERE,
+                "Category is null. Can't save null value in the database.");
     }
 }

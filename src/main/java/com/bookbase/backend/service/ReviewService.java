@@ -38,8 +38,9 @@ public class ReviewService {
         if (review != null) {
             reviewRepository.save(review);
         }
-        LOGGER.log(Level.SEVERE,
-                "Author is null. Can't save null value in the database.");
+        else
+            LOGGER.log(Level.SEVERE,
+                "Review is null. Can't save null value in the database.");
     }
 //    @PostConstruct
 //    public void populateTestData() {

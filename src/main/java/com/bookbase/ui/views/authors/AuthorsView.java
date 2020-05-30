@@ -13,8 +13,6 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -23,7 +21,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -47,6 +44,7 @@ public class AuthorsView extends VerticalLayout {
         this.authorService = authorService;
         this.bookService = bookService;
         this.categoryService = categoryService;
+
         addClassName("list-view");
         setSizeFull();
         configureGrid();
@@ -169,7 +167,6 @@ public class AuthorsView extends VerticalLayout {
                 return best.getTitle();
             }
         }).setHeader("Best book");
-
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
