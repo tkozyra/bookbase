@@ -5,6 +5,7 @@ import com.bookbase.backend.service.BookService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -12,41 +13,38 @@ import com.vaadin.flow.data.binder.Binder;
 public class BookDetails extends VerticalLayout {
 
     private Book book;
-    private String bookTitle;
-
     private BookService bookService;
+    private BooksView booksView;
 
-    private H1 title;
-    private Paragraph authorFirstname;
-    private Paragraph categoryName;
-    private Paragraph description;
+    private final Button editButton = new Button("edit");
+    private final Button closeButton = new Button("close");
 
-
-    public void setBook(String bookTitle) {
-
-        this.bookTitle = bookTitle;
-        this.book = bookService.findBookByTitle(bookTitle);
-        if(this.book != null){
-
-            title = new H1(book.getTitle());
-            authorFirstname = new Paragraph(book.getAuthor().getFirstName());
-            categoryName = new Paragraph(book.getCategory().getName());
-            description = new Paragraph(book.getDescription());
-
-            add(
-                    title, authorFirstname, categoryName, description
-            );
-        }
+    public BookDetails(BooksView booksView, BookService bookService) {
+        addClassName("book-details");
+        this.booksView = booksView;
+        this.bookService = bookService;
     }
 
-    public BookDetails(BookService bookService) {
-        addClassName("book-details");
+    protected void setDetails(Book book) {
+        if (book != null) {
+            this.book = book;
+            H1 title = new H1(this.book.getTitle());
+            Paragraph author = new Paragraph(book.getAuthor().getFirstName() + " " +
+                    book.getAuthor().getSecondName());
+            Paragraph categoryName = new Paragraph(book.getCategory().getName());
+            Paragraph description = new Paragraph(book.getDescription());
 
-        this.bookService = bookService;
+            editButton.addClickListener(e -> booksView.editBook(this.book));
+            closeButton.addClickListener(e -> booksView.closeDetails());
 
-        this.book = bookService.findBookByTitle(bookTitle);
+            this.removeAll();
+            this.add(new HorizontalLayout(title, editButton, closeButton), author, categoryName, description);
+        }
+        else
+            this.book = null;
+    }
 
-        setBook(bookTitle);
-
+    protected Book getCurrentBook() {
+        return book;
     }
 }

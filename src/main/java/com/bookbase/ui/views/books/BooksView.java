@@ -41,10 +41,8 @@ public class BooksView extends VerticalLayout {
 
     private Paragraph title = new Paragraph("");
     private Paragraph author = new Paragraph("");
-    Div details;
-//    Button buttonHideBookDetails = new Button("close");
-//    VerticalLayout details = new VerticalLayout(title, author, buttonHideBookDetails);
     private final Select<Category> categorySelect = new Select<>();
+    private final BookDetails bookDetails;
 
 
 
@@ -62,31 +60,23 @@ public class BooksView extends VerticalLayout {
         form.addListener(BookForm.DeleteEvent.class, this::deleteBook);
         form.addListener(BookForm.CloseEvent.class, event -> closeEditor());
 
-        Div details = new Div(title, author);
+        bookDetails = new BookDetails(this, this.bookService);
+        bookDetails.addClassName("book-details");
 
-        details.addClassName("book-details");
-        Div content = new Div(grid, form, details);
+        Div content = new Div(grid, bookDetails, form);
         content.addClassName("content");
         content.setSizeFull();
 
         add(
                 new H1("Books"),
                 getToolBar(),
-//                getBookDetails(),
                 content
         );
         updateList();
         closeEditor();
-        closeBookDetails();
+        closeDetails();
     }
 
-//    private VerticalLayout getBookDetails() {
-//        Paragraph title = new Paragraph("");
-//        Paragraph author = new Paragraph("");
-//        Button buttonHideBookDetails = new Button("close");
-//        buttonHideBookDetails.addClickListener(event -> closeBookDetails());
-//        return new VerticalLayout(title, author, buttonHideBookDetails);
-//    }
 
     private HorizontalLayout getToolBar() {
         configureFilter();
@@ -129,13 +119,15 @@ public class BooksView extends VerticalLayout {
     private void closeEditor(){
         form.setBook(null);
         form.setVisible(false);
+        bookDetails.setVisible(true);
         removeClassName("editing");
     }
 
-    private void editBook(Book book){
+    protected void editBook(Book book){
         if (book == null){
             closeEditor();
         } else{
+            bookDetails.setVisible(false);
             form.setBook(book);
             form.setVisible(true);
             addClassName("editing");
@@ -192,20 +184,23 @@ public class BooksView extends VerticalLayout {
         }).setHeader("Category");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        grid.asSingleSelect().addValueChangeListener(event -> editBook(event.getValue()));
-        grid.asSingleSelect().addValueChangeListener(event -> passBookDetails(event.getValue()));
+        grid.asSingleSelect().addValueChangeListener(event -> switchDetails(event.getValue()));
 
     }
 
-    private void passBookDetails(Book book) {
-        if (book == null){
-            closeBookDetails();
-        } else {
-            title.setText(book.getTitle());
+    private void switchDetails(Book book) {
+        if (book == null || (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook())))
+            closeDetails();
+        else {
+            bookDetails.setDetails(book);
+            closeEditor();
+            bookDetails.setVisible(true);
         }
     }
 
-    private void closeBookDetails(){
-
+    protected void closeDetails() {
+        bookDetails.setVisible(false);
+        bookDetails.setDetails(null);
+        grid.deselectAll();
     }
 }

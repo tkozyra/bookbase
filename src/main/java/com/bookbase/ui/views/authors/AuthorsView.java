@@ -56,6 +56,7 @@ public class AuthorsView extends VerticalLayout {
         authorForm.addListener(AuthorForm.DeleteEvent.class, this::deleteAuthor);
 
         authorDetails = new AuthorDetails(this, this.bookService);
+        authorDetails.addClassName("author-details");
 
         Div content = new Div(grid, authorDetails, authorForm);
         content.addClassName("content");
@@ -175,11 +176,11 @@ public class AuthorsView extends VerticalLayout {
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-        grid.asSingleSelect().addValueChangeListener(event -> showDetails(event.getValue()));
+        grid.asSingleSelect().addValueChangeListener(event -> switchDetails(event.getValue()));
     }
 
-    private void showDetails(Author author) {
-        if (author == null || authorDetails.isVisible())
+    private void switchDetails(Author author) {
+        if (author == null || (authorDetails.isVisible() && author.equals(authorDetails.getCurrentAuthor())))
             closeDetails();
         else {
             authorDetails.setDetails(author);
@@ -188,9 +189,10 @@ public class AuthorsView extends VerticalLayout {
         }
     }
 
-    private void closeDetails() {
+    protected void closeDetails() {
         authorDetails.setVisible(false);
         authorDetails.setDetails(null);
+        grid.deselectAll();
     }
 
     private void updateList() {
