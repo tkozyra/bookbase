@@ -382,6 +382,7 @@ public class AuthorsView extends VerticalLayout {
 
     private void closeDetails() {
         authorDetails.setVisible(false);
+        authorDetails.setDetails(null);
     }
 
     private void updateList() {

@@ -31,8 +31,8 @@ public class AuthorDetails extends FormLayout {
     }
 
     protected void setDetails(Author author) {
-        this.author = author;
-        if (this.author != null) {
+        if (author != null) {
+            this.author = author;
             name = new H1(this.author.getFirstName() + " " + this.author.getSecondName());
             birthYear = new Paragraph(String.valueOf(author.getBirthYear()));
             avgRating = new Paragraph(String.valueOf(author.getRating()));
@@ -41,7 +41,8 @@ public class AuthorDetails extends FormLayout {
 
             editButton.addClickListener(e -> authorsView.editAuthor(this.author));
 
-            add(new HorizontalLayout(name, editButton), birthYear, avgRating, bookList);
+            this.removeAll();
+            this.add(new HorizontalLayout(name, editButton), birthYear, avgRating, bookList);
         }
     }
 }
