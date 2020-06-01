@@ -27,6 +27,8 @@ public class Author {
 
     private int birthYear;
 
+    private String image;
+
     private int ratingSum;
 
     private int ratingCount;
