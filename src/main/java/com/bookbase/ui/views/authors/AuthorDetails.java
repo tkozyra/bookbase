@@ -31,10 +31,10 @@ public class AuthorDetails extends FormLayout {
         if (author != null) {
             this.author = author;
             H1 name = new H1(this.author.getFirstName() + " " + this.author.getSecondName());
-            Paragraph birthYear = new Paragraph(String.valueOf(this.author.getBirthYear()));
-            Paragraph avgRating = new Paragraph(String.valueOf(this.author.getRating()));
-            Paragraph bookList = new Paragraph();
-            bookService.findAll(this.author).forEach(book -> bookList.add(book.getTitle()));
+            Paragraph birthYear = new Paragraph("Birth year: " + String.valueOf(this.author.getBirthYear()));
+            Paragraph avgRating = new Paragraph("Average rating: " + String.valueOf(this.author.getRating()));
+//            Paragraph bookList = new Paragraph();
+//            bookService.findAll(this.author).forEach(book -> bookList.add(book.getTitle()));
 
             Icon iconEdit = new Icon(VaadinIcon.EDIT);
             buttonEdit.addClickListener(e -> authorsView.editAuthor(this.author));
@@ -54,7 +54,7 @@ public class AuthorDetails extends FormLayout {
             }
 
             this.removeAll();
-            this.add(new HorizontalLayout(authorImage, new VerticalLayout(name, birthYear, avgRating, bookList, new HorizontalLayout(buttonEdit, buttonClose))));
+            this.add(new HorizontalLayout(authorImage, new VerticalLayout(name, birthYear, avgRating, new HorizontalLayout(buttonEdit, buttonClose))));
         }
         else
             this.author = null;

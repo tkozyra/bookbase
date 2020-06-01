@@ -46,12 +46,12 @@ public class MainLayout extends AppLayout {
         authors.addClassName("navbar-link");
         authors.addComponentAsFirst(authorIcon);
 
-        Icon signOutIcon = new Icon(VaadinIcon.SIGN_OUT_ALT);
-        Tab signOut = new Tab(new RouterLink("Sign Out", LoginView.class));
-        signOut.addClassName("navbar-link");
-        signOut.addComponentAsFirst(signOutIcon);
+//        Icon signOutIcon = new Icon(VaadinIcon.SIGN_OUT_ALT);
+//        Tab signOut = new Tab(new RouterLink("Sign Out", LoginView.class));
+//        signOut.addClassName("navbar-link");
+//        signOut.addComponentAsFirst(signOutIcon);
 
-        Tabs tabs = new Tabs(home, books, authors, signOut);
+        Tabs tabs = new Tabs(home, books, authors);
         centeredLayout.add(tabs);
         addToNavbar(false, logo, centeredLayout);
     }

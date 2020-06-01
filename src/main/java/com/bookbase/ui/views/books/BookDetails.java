@@ -40,7 +40,7 @@ public class BookDetails extends VerticalLayout {
             Paragraph description = new Paragraph(book.getDescription());
 
 
-            Image cover = new Image("https://dummyimage.com/600x400/000/fff", "Book cover");
+            Image cover = new Image("https://dummyimage.com/315x475/000/fff", "Book cover");
             cover.addClassName("book-cover-image");
 
             if(book.getCoverImage() != null){
