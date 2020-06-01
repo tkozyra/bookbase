@@ -4,6 +4,7 @@ import com.bookbase.backend.entity.Book;
 import com.bookbase.backend.service.BookService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,8 +17,9 @@ public class BookDetails extends VerticalLayout {
     private BookService bookService;
     private BooksView booksView;
 
-    private final Button editButton = new Button("edit");
-    private final Button closeButton = new Button("close");
+    private final Button buttonEdit = new Button("edit");
+    private final Button buttonClose = new Button("close");
+    private final Button buttonRate = new Button("rate");
 
     public BookDetails(BooksView booksView, BookService bookService) {
         addClassName("book-details");
@@ -34,11 +36,22 @@ public class BookDetails extends VerticalLayout {
             Paragraph categoryName = new Paragraph(book.getCategory().getName());
             Paragraph description = new Paragraph(book.getDescription());
 
-            editButton.addClickListener(e -> booksView.editBook(this.book));
-            closeButton.addClickListener(e -> booksView.closeDetails());
+            Image cover = new Image("https://dummyimage.com/600x400/000/fff", "Book cover");
+            cover.addClassName("book-cover-image");
+
+            if(book.getCoverImage() != null){
+                cover = new Image(book.getCoverImage(), "Book cover");
+            }
+
+            buttonEdit.addClickListener(e -> booksView.editBook(this.book));
+            buttonEdit.addClassName("button-edit");
+            buttonClose.addClickListener(e -> booksView.closeDetails());
+            buttonClose.addClassName("button-close");
+            //clickListener todo
+            buttonRate.addClassName("button-rate");
 
             this.removeAll();
-            this.add(new HorizontalLayout(title, editButton, closeButton), author, categoryName, description);
+            this.add(new HorizontalLayout(cover, new VerticalLayout(title, author, categoryName, description, new HorizontalLayout(buttonRate, buttonEdit, buttonClose))));
         }
         else
             this.book = null;

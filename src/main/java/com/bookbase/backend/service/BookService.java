@@ -93,14 +93,14 @@ public class BookService {
     public void populateTestData() {
         if (categoryRepository.count() == 0){
             categoryRepository.saveAll(
-                    Stream.of("Informatyka", "Przygoda życia")
+                    Stream.of("Informatyka", "Przygoda życia", "Nonfiction")
                     .map(Category::new).collect(Collectors.toList()));
         }
         if (bookRepository.count() == 0) {
             Random r = new Random(0);
             List<Category> categories = categoryRepository.findAll();
             bookRepository.saveAll(
-                    Stream.of("Na następnych zawodach cię pokonam", "Wprowadzenie do algorytmów", "Los Pollos Hermanos")
+                    Stream.of("Na następnych zawodach cię pokonam", "Wprowadzenie do algorytmów", "Los Pollos Hermanos", "Educated")
                             .map(name -> {
                                         Book book = new Book();
                                         book.setTitle(name);
@@ -113,7 +113,9 @@ public class BookService {
         }
         if (authorRepository.count() == 0) {
             List<Book> books = bookRepository.findAll();
+            List<Category> categories = categoryRepository.findAll();
             List<Author> authors = new ArrayList<>();
+
             Author author1 = new Author("Janne", "Ahonnen", 1969);
 //            author1.addBook(books.get(0));
             books.get(0).setAuthor(author1);
@@ -124,6 +126,14 @@ public class BookService {
             Author author3 = new Author("Alejandro", "McDonald", 2010);
             authors.add(author3);
             books.get(2).setAuthor(author3);
+
+            Author author4 = new Author("Tara", "Westover", 1986);
+            authors.add(author4);
+            books.get(3).setAuthor(author4);
+            books.get(3).setCategory(categoryRepository.findCategoryByName("Nonfiction"));
+
+            books.get(3).setCoverImage("https://i.imgur.com/8dxTcI9.jpg");
+
             authorRepository.saveAll(authors);
             bookRepository.saveAll(books);
         }

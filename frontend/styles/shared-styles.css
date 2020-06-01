@@ -2,24 +2,36 @@
     font-size: 1.2em;
 }
 
+.list-view{
+    padding: 3em;
+}
+
 .list-view .content{
     display: flex;
 }
-
-.list-view .books-grid{
-    flex: 2;
+.list-view .books-grid,
+.list-view .author-grid{
+    flex: 4;
 }
 
-.list-view .book-form{
-    flex: 1;
-    padding: var(--lumo-space-m);
+.list-view .book-form,
+.list-view .author-form,
+.list-view .book-details,
+.list-view .author-details{
+    flex: 3;
+    padding: 0em 3em 3em 4em;
 }
 
-.list-view .book-details{
-    flex: 1;
-    padding: var(--lumo-space-m);
+.book-details,
+.author-details{
+    /*border: 1px solid blue;*/
+    /*padding: 3em;*/
 }
 
+.book-cover-image{
+    width: 315px;
+    height: 475px;
+}
 
 /*NAVBAR*/
 .navbar-link {

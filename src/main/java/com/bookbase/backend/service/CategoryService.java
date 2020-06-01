@@ -42,4 +42,8 @@ public class CategoryService {
             LOGGER.log(Level.SEVERE,
                 "Category is null. Can't save null value in the database.");
     }
+
+    public Category findCategoryByName(String name){
+        return categoryRepository.findCategoryByName(name);
+    }
 }

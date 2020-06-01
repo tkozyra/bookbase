@@ -28,6 +28,8 @@ public class Book {
     @OneToMany
     private List<Review> reviewList;
 
+    private String coverImage;
+
     private String description;
 
     private int year;
@@ -45,6 +47,7 @@ public class Book {
         this.category = category;
         this.description = description;
         this.year = year;
+//        this.coverImage = coverImage;
         ratingSum = 0;
         ratingCount = 0;
         reviewList = new ArrayList<>();
@@ -64,6 +67,10 @@ public class Book {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
     }
 
     public int getYear() {
@@ -93,6 +100,10 @@ public class Book {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
     }
 
     public void setDescription(String description) {
