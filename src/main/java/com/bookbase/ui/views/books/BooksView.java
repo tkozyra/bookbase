@@ -230,6 +230,7 @@ public class BooksView extends VerticalLayout {
         else if (bookReview.isVisible() && book.equals(bookReview.getBook()))
             closeReview();
         else {
+            closeReview();
             bookDetails.setDetails(book);
             closeEditor();
             bookDetails.setVisible(true);
