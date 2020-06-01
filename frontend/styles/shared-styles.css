@@ -17,6 +17,7 @@
 .list-view .book-form,
 .list-view .author-form,
 .list-view .review-form,
+.list-view .category-form,
 .list-view .book-details,
 .list-view .author-details{
     flex: 3;
