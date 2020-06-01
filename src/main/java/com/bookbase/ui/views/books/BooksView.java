@@ -130,10 +130,20 @@ public class BooksView extends VerticalLayout {
     }
 
     private void deleteBook(BookForm.DeleteEvent event){
+        deleteBooksReviews(event.getBook());
         bookService.delete(event.getBook());
         updateList();
         closeEditor();
         closeDetails();
+    }
+
+    private void deleteBooksReviews(Book book) {
+      List<Review> reviews = reviewService.findAll();
+        for (Review r : reviews) {
+            if (r.getBook().equals(book))
+                r.getBook().deleteReview(r);
+                reviewService.delete(r);
+        }
     }
 
     private void closeEditor(){
@@ -255,5 +265,6 @@ public class BooksView extends VerticalLayout {
         bookService.save(review.getBook());
         authorService.save(review.getBook().getAuthor());
         reviewService.save(review);
+//        bookDetails.setDetails(bookDetails.getCurrentBook());
     }
 }

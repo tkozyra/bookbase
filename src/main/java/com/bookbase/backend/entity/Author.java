@@ -95,6 +95,11 @@ public class Author {
         return image;
     }
 
+    public void removeRating(int rating) {
+        ratingSum -= rating;
+        ratingCount--;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
