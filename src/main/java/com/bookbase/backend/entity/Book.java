@@ -25,8 +25,8 @@ public class Book {
     @ManyToOne
     private Category category;
 
-    @OneToMany
-    private List<Review> reviewList;
+//    @OneToMany
+//    private List<Review> reviewList;
 
     private String coverImage;
 
@@ -50,7 +50,7 @@ public class Book {
 //        this.coverImage = coverImage;
         ratingSum = 0;
         ratingCount = 0;
-        reviewList = new ArrayList<>();
+//        reviewList = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -86,9 +86,9 @@ public class Book {
                 .doubleValue();
     }
 
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
+//    public List<Review> getReviewList() {
+//        return reviewList;
+//    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -121,7 +121,7 @@ public class Book {
     }
 
     public void addReview(Review review) {
-        this.reviewList.add(review);
+//        this.reviewList.add(review);
         this.author.addRating(review.getRating());
         this.addRating(review.getRating());
     }

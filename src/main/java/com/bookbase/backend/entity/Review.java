@@ -32,6 +32,7 @@ public class Review {
         this.nickname = nickname;
         this.contents = contents;
         this.rating = rating;
+        addReviewToBook();
     }
     public void addReviewToBook(){
         this.book.addReview(this);
@@ -55,5 +56,16 @@ public class Review {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewID=" + reviewID +
+                ", book=" + book +
+                ", nickname='" + nickname + '\'' +
+                ", rating=" + rating +
+                ", contents='" + contents + '\'' +
+                '}';
     }
 }

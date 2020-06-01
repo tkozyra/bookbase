@@ -36,6 +36,7 @@ public class ReviewService {
 
     public void save(Review review){
         if (review != null) {
+            System.out.println(review);
             reviewRepository.save(review);
         }
         else

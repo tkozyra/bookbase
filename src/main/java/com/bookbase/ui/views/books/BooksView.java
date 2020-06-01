@@ -3,9 +3,11 @@ package com.bookbase.ui.views.books;
 import com.bookbase.backend.entity.Author;
 import com.bookbase.backend.entity.Book;
 import com.bookbase.backend.entity.Category;
+import com.bookbase.backend.entity.Review;
 import com.bookbase.backend.service.AuthorService;
 import com.bookbase.backend.service.BookService;
 import com.bookbase.backend.service.CategoryService;
+import com.bookbase.backend.service.ReviewService;
 import com.bookbase.ui.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -33,9 +35,10 @@ public class BooksView extends VerticalLayout {
     private Grid<Book> grid = new Grid<>(Book.class);
     private TextField filterText = new TextField();
 
-    private BookService bookService;
-    private AuthorService authorService;
-    private CategoryService categoryService;
+    private final BookService bookService;
+    private final AuthorService authorService;
+    private final CategoryService categoryService;
+    private final ReviewService reviewService;
 
     private final BookForm form;
 
@@ -43,13 +46,16 @@ public class BooksView extends VerticalLayout {
     private Paragraph author = new Paragraph("");
     private final Select<Category> categorySelect = new Select<>();
     private final BookDetails bookDetails;
+    private final BookReview bookReview;
 
 
 
-    public BooksView(BookService bookService, AuthorService authorService, CategoryService categoryService){
+    public BooksView(BookService bookService, AuthorService authorService,
+                     CategoryService categoryService, ReviewService reviewService){
         this.bookService = bookService;
         this.authorService = authorService;
         this.categoryService = categoryService;
+        this.reviewService = reviewService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
@@ -60,10 +66,17 @@ public class BooksView extends VerticalLayout {
         form.addListener(BookForm.DeleteEvent.class, this::deleteBook);
         form.addListener(BookForm.CloseEvent.class, event -> closeEditor());
 
-        bookDetails = new BookDetails(this, this.bookService);
+        bookReview = new BookReview(this);
+        bookReview.setVisible(false);
+        bookReview.addClassName("add-review");
+
+        bookReview.addListener(BookReview.SaveEvent.class, this::saveReview);
+        bookReview.addListener(BookReview.CloseEvent.class, event -> closeReview());
+
+        bookDetails = new BookDetails(this);
         bookDetails.addClassName("book-details");
 
-        Div content = new Div(grid, bookDetails, form);
+        Div content = new Div(grid, bookDetails, form, bookReview);
         content.addClassName("content");
         content.setSizeFull();
 
@@ -108,6 +121,12 @@ public class BooksView extends VerticalLayout {
         bookService.save(event.getBook());
         updateList();
         closeEditor();
+    }
+
+    private void saveReview(BookReview.SaveEvent event) {
+        reviewService.save(event.getReview());
+        updateList();
+        closeReview();
     }
 
     private void deleteBook(BookForm.DeleteEvent event){
@@ -189,8 +208,16 @@ public class BooksView extends VerticalLayout {
     }
 
     private void switchDetails(Book book) {
-        if (book == null || (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook())))
+//        if (book == null || (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook())))
+//            closeDetails();
+        if (book == null) {
             closeDetails();
+            closeReview();
+        }
+        else if (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook()))
+            closeDetails();
+        else if (bookReview.isVisible() && book.equals(bookReview.getBook()))
+            closeReview();
         else {
             bookDetails.setDetails(book);
             closeEditor();
@@ -202,5 +229,28 @@ public class BooksView extends VerticalLayout {
         bookDetails.setVisible(false);
         bookDetails.setDetails(null);
         grid.deselectAll();
+    }
+
+    protected void createReview(Book book) {
+        if (book == null)
+            closeReview();
+        else {
+//            switchDetails(book);
+            bookDetails.setVisible(false);
+            bookReview.setVisible(true);
+//            bookReview.addReview(book);
+            bookReview.setBook(book);
+        }
+    }
+
+    private void closeReview(){
+        bookReview.setVisible(false);
+        bookReview.setBook(null);
+        bookDetails.setVisible(true);
+    }
+
+    protected void addReview(Review review) {
+        closeReview();
+        reviewService.save(review);
     }
 }

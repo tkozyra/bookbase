@@ -14,17 +14,15 @@ import com.vaadin.flow.data.binder.Binder;
 public class BookDetails extends VerticalLayout {
 
     private Book book;
-    private BookService bookService;
     private BooksView booksView;
 
     private final Button buttonEdit = new Button("edit");
     private final Button buttonClose = new Button("close");
     private final Button buttonRate = new Button("rate");
 
-    public BookDetails(BooksView booksView, BookService bookService) {
+    public BookDetails(BooksView booksView) {
         addClassName("book-details");
         this.booksView = booksView;
-        this.bookService = bookService;
     }
 
     protected void setDetails(Book book) {
@@ -47,7 +45,7 @@ public class BookDetails extends VerticalLayout {
             buttonEdit.addClassName("button-edit");
             buttonClose.addClickListener(e -> booksView.closeDetails());
             buttonClose.addClassName("button-close");
-            //clickListener todo
+            buttonRate.addClickListener(e -> booksView.createReview(this.book));
             buttonRate.addClassName("button-rate");
 
             this.removeAll();
