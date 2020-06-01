@@ -18,14 +18,14 @@ public class Category {
     @NotNull
     private String name;
 
-    @OneToMany
-    private List<Book> books;
+//    @OneToMany
+//    private List<Book> books;
 
     public Category() {
     }
 
     public Category(@NotEmpty @NotNull String name) {
-        this.books = new ArrayList<>();
+       // this.books = new ArrayList<>();
         this.name = name;
     }
 
@@ -33,13 +33,13 @@ public class Category {
         return name;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
+//    public List<Book> getBooks() {
+//        return books;
+//    }
 
-    public void addBook(Book book) {
-        this.books.add(book);
-    }
+//    public void addBook(Book book) {
+//        this.books.add(book);
+//    }
 
     @Override
     public boolean equals(Object o) {
