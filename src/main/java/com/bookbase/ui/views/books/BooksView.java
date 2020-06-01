@@ -38,7 +38,7 @@ public class BooksView extends VerticalLayout {
     private final BookService bookService;
     private final AuthorService authorService;
     private final CategoryService categoryService;
-    private final ReviewService reviewService;
+    protected final ReviewService reviewService;
 
     private final BookForm form;
 

@@ -1,6 +1,7 @@
 package com.bookbase.ui.views.books;
 
 import com.bookbase.backend.entity.Book;
+import com.bookbase.backend.entity.Review;
 import com.bookbase.backend.service.BookService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -49,7 +50,18 @@ public class BookDetails extends VerticalLayout {
             buttonRate.addClassName("button-rate");
 
             this.removeAll();
-            this.add(new HorizontalLayout(cover, new VerticalLayout(title, author, categoryName, description, new HorizontalLayout(buttonRate, buttonEdit, buttonClose))));
+
+            HorizontalLayout mainLayout = new HorizontalLayout(cover, new VerticalLayout(title, author, categoryName, description, new HorizontalLayout(buttonRate, buttonEdit, buttonClose)));
+            VerticalLayout reviewsLayout = new VerticalLayout();
+            reviewsLayout.add();
+            for (Review review : booksView.reviewService.findAll()) {
+                if (review.getBook().equals(book)) {
+//                    reviews.add(new VerticalLayout(new HorizontalLayout(review.getNickname(), String.valueOf(review.getRating())), review.getContents()));
+                    HorizontalLayout nickAndRate = new HorizontalLayout(new Paragraph(review.getNickname()), new Paragraph(String.valueOf(review.getRating())));
+                    reviewsLayout.add(new VerticalLayout(nickAndRate, new Paragraph(review.getContents())));
+                }
+            }
+            this.add(new VerticalLayout(mainLayout, reviewsLayout));
         }
         else
             this.book = null;
