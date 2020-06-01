@@ -93,19 +93,19 @@ public class BookService {
     public void populateTestData() {
         if (categoryRepository.count() == 0){
             categoryRepository.saveAll(
-                    Stream.of("Informatyka", "Przygoda życia", "Nonfiction")
+                    Stream.of("Science Fiction", "Horror", "Nonfiction")
                     .map(Category::new).collect(Collectors.toList()));
         }
         if (bookRepository.count() == 0) {
             Random r = new Random(0);
             List<Category> categories = categoryRepository.findAll();
             bookRepository.saveAll(
-                    Stream.of("Na następnych zawodach cię pokonam", "Wprowadzenie do algorytmów", "Los Pollos Hermanos", "Educated")
+                    Stream.of("The institute", "It", "Recursion", "Los Pollos Hermanos", "Educated", "Bad blood")
                             .map(name -> {
                                         Book book = new Book();
                                         book.setTitle(name);
                                         book.setYear(r.nextInt()%20 + 2001);
-                                        book.setCategory(categories.get(r.nextInt()%2));
+//                                        book.setCategory(categories.get(r.nextInt()%2));
 //                                        book.addReview(new Review(book, "user" + r.nextInt() % 3, "some review number " + r.nextInt() % 10, r.nextInt() % 5 + 1));
                                         return book;
                             })
@@ -116,23 +116,41 @@ public class BookService {
             List<Category> categories = categoryRepository.findAll();
             List<Author> authors = new ArrayList<>();
 
-            Author author1 = new Author("Janne", "Ahonnen", 1969);
-//            author1.addBook(books.get(0));
+            Author author1 = new Author("Stephen", "King", 1947);
             books.get(0).setAuthor(author1);
+            books.get(1).setAuthor(author1);
+            books.get(0).setCategory(categoryRepository.findCategoryByName("Horror"));
+            books.get(1).setCategory(categoryRepository.findCategoryByName("Horror"));
+            books.get(0).setCoverImage("https://i.imgur.com/j6jkRgu.jpg");
+            books.get(1).setCoverImage("https://i.imgur.com/ztTP2CG.jpg");
             authors.add(author1);
-            Author author2 = new Author("Garek", "Cormen", 1954);
+
+            Author author2 = new Author("Blake", "Crouch", 1954);
+
+            books.get(2).setAuthor(author2);
+            books.get(2).setCategory(categoryRepository.findCategoryByName("Science Fiction"));
+            books.get(2).setCoverImage("https://i.imgur.com/mmpsHUM.jpg");
             authors.add(author2);
-            books.get(1).setAuthor(author2);
-            Author author3 = new Author("Alejandro", "McDonald", 2010);
+
+            Author author3 = new Author("Tara", "Westover", 1986);
+
+            books.get(4).setAuthor(author3);
+            books.get(4).setCategory(categoryRepository.findCategoryByName("Nonfiction"));
+            books.get(4).setCoverImage("https://i.imgur.com/8dxTcI9.jpg");
             authors.add(author3);
-            books.get(2).setAuthor(author3);
 
-            Author author4 = new Author("Tara", "Westover", 1986);
+            Author author4 = new Author("John", "Carreyrou", 1983);
+
+            books.get(5).setAuthor(author4);
+            books.get(5).setCategory(categoryRepository.findCategoryByName("Nonfiction"));
+            books.get(5).setCoverImage("https://i.imgur.com/ouFpZM5.jpg");
             authors.add(author4);
-            books.get(3).setAuthor(author4);
-            books.get(3).setCategory(categoryRepository.findCategoryByName("Nonfiction"));
 
-            books.get(3).setCoverImage("https://i.imgur.com/8dxTcI9.jpg");
+            Author author5 = new Author("John", "Wick", 1954);
+            authors.add(author5);
+            books.get(3).setAuthor(author5);
+            books.get(3).setCategory(categoryRepository.findCategoryByName("Science Fiction"));
+            books.get(3).setCoverImage("https://i.imgur.com/64juBze.png");
 
             authorRepository.saveAll(authors);
             bookRepository.saveAll(books);

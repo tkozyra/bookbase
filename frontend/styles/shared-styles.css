@@ -28,9 +28,16 @@
     /*padding: 3em;*/
 }
 
-.book-cover-image{
+.book-cover-div{
     width: 315px;
     height: 475px;
+}
+
+.book-cover-image{
+    width: 100%;
+    /*max-height: 100%;*/
+    height: auto;
+    /*display: block;*/
 }
 
 /*NAVBAR*/
