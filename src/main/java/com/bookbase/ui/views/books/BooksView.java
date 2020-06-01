@@ -159,7 +159,7 @@ public class BooksView extends VerticalLayout {
     private void closeEditor(){
         form.setBook(null);
         form.setVisible(false);
-        bookDetails.setVisible(true);
+        bookDetails.setVisible(false);
         removeClassName("editing");
     }
 
