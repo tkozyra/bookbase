@@ -94,6 +94,7 @@ public class BookReview extends FormLayout {
             selectRate.clear();
             contentField.clear();
             booksView.addReview(review);
+            booksView.closeDetails();
         }
     }
 

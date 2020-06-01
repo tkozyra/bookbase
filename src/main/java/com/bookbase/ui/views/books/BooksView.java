@@ -133,6 +133,7 @@ public class BooksView extends VerticalLayout {
         bookService.delete(event.getBook());
         updateList();
         closeEditor();
+        closeDetails();
     }
 
     private void closeEditor(){
@@ -251,6 +252,8 @@ public class BooksView extends VerticalLayout {
 
     protected void addReview(Review review) {
         closeReview();
+        bookService.save(review.getBook());
+        authorService.save(review.getBook().getAuthor());
         reviewService.save(review);
     }
 }

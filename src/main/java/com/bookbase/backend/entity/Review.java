@@ -18,7 +18,6 @@ public class Review {
     @NotNull
     private String nickname;
 
-    @NotEmpty
     @NotNull
     private int rating;
 
@@ -27,7 +26,7 @@ public class Review {
     public Review(){
     }
 
-    public Review(Book book, @NotEmpty @NotNull String nickname, String contents, @NotEmpty @NotNull int rating) {
+    public Review(Book book, @NotEmpty @NotNull String nickname, String contents, @NotNull int rating) {
         this.book = book;
         this.nickname = nickname;
         this.contents = contents;
