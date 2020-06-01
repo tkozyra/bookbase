@@ -7,6 +7,8 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -34,8 +36,12 @@ public class AuthorDetails extends FormLayout {
             Paragraph bookList = new Paragraph();
             bookService.findAll(this.author).forEach(book -> bookList.add(book.getTitle()));
 
+            Icon iconEdit = new Icon(VaadinIcon.EDIT);
             buttonEdit.addClickListener(e -> authorsView.editAuthor(this.author));
             buttonEdit.addClassName("button-edit");
+            buttonEdit.setIcon(iconEdit);
+            Icon iconClose = new Icon(VaadinIcon.CLOSE);
+            buttonClose.setIcon(iconClose);
             buttonClose.addClickListener(e -> authorsView.closeDetails());
             buttonClose.addClassName("button-close");
 

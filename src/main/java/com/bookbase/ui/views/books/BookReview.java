@@ -9,6 +9,11 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -30,19 +35,33 @@ public class BookReview extends FormLayout {
     private TextArea contentField = new TextArea("Contents");
 
     private Button addButton = new Button("add");
-    private Button cancelButton = new Button("cancel");
+    private Button cancelButton = new Button("close");
 
 //    private Binder<Review> binder = new BeanValidationBinder<>(Review.class);
 
     public BookReview(BooksView booksView) {
         this.booksView = booksView;
 //        binder.bindInstanceFields(this);
+        addClassName("review-form");
+
+
+        nickField.setWidthFull();
+        selectRate.setWidthFull();
+        contentField.setWidthFull();
 
         selectRate.setItems(1,2,3,4,5);
         selectRate.setLabel("Rating");
         nickField.addValueChangeListener(e -> checkFields());
         selectRate.addValueChangeListener(e -> checkFields());
 
+        configure();
+    }
+
+    private void configure(){
+        if(book != null){
+            title = new H1(book.getTitle());
+        }
+        this.removeAll();
         add(new VerticalLayout(
                 title,
                 nickField,
@@ -61,8 +80,13 @@ public class BookReview extends FormLayout {
     }
 
     private HorizontalLayout configureButtons() {
+        Icon iconClose = new Icon(VaadinIcon.CLOSE);
+        Icon iconAdd = new Icon(VaadinIcon.PLUS);
+
         addButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+        addButton.setIcon(iconAdd);
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        cancelButton.setIcon(iconClose);
 
         addButton.addClickListener(click -> createReview());
         cancelButton.addClickListener(click -> fireEvent(new CloseEvent(this)));
@@ -78,6 +102,7 @@ public class BookReview extends FormLayout {
 
     protected void setBook(Book book) {
         this.book = book;
+        configure();
     }
 
 //    protected void createReview(Book book) {

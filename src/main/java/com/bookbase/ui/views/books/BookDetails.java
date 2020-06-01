@@ -5,8 +5,11 @@ import com.bookbase.backend.entity.Review;
 import com.bookbase.backend.service.BookService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -29,11 +32,13 @@ public class BookDetails extends VerticalLayout {
     protected void setDetails(Book book) {
         if (book != null) {
             this.book = book;
-            H1 title = new H1(this.book.getTitle());
-            Paragraph author = new Paragraph(book.getAuthor().getFirstName() + " " +
+            H2 title = new H2(this.book.getTitle());
+
+            Paragraph author = new Paragraph("Author: " + book.getAuthor().getFirstName() + " " +
                     book.getAuthor().getSecondName());
-            Paragraph categoryName = new Paragraph(book.getCategory().getName());
+            Paragraph categoryName = new Paragraph("Category: " + book.getCategory().getName());
             Paragraph description = new Paragraph(book.getDescription());
+
 
             Image cover = new Image("https://dummyimage.com/600x400/000/fff", "Book cover");
             cover.addClassName("book-cover-image");
@@ -42,12 +47,18 @@ public class BookDetails extends VerticalLayout {
                 cover = new Image(book.getCoverImage(), "Book cover");
             }
 
+            Icon iconEdit = new Icon(VaadinIcon.EDIT);
             buttonEdit.addClickListener(e -> booksView.editBook(this.book));
             buttonEdit.addClassName("button-edit");
+            buttonEdit.setIcon(iconEdit);
+            Icon iconClose = new Icon(VaadinIcon.CLOSE);
             buttonClose.addClickListener(e -> booksView.closeDetails());
             buttonClose.addClassName("button-close");
+            buttonClose.setIcon(iconClose);
+            Icon iconRate = new Icon(VaadinIcon.STAR_HALF_LEFT_O);
             buttonRate.addClickListener(e -> booksView.createReview(this.book));
             buttonRate.addClassName("button-rate");
+            buttonRate.setIcon(iconRate);
 
             this.removeAll();
 

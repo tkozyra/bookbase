@@ -29,6 +29,7 @@ public class MainLayout extends AppLayout {
         centeredLayout.setSizeFull();
         centeredLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         centeredLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        centeredLayout.addClassName("navbar");
 
         Icon homeIcon = new Icon(VaadinIcon.HOME);
         Tab home = new Tab(new RouterLink("Home", HomeView.class));
