@@ -145,6 +145,7 @@ public class AuthorsView extends VerticalLayout {
         grid.removeColumnByKey("fullName");
         grid.removeColumnByKey("rating");
         grid.removeColumnByKey("birthYear");
+        grid.removeColumnByKey("image");
 
         grid.addColumn(author -> Calendar.getInstance().get(Calendar.YEAR) - author.getBirthYear())
                 .setHeader("age");

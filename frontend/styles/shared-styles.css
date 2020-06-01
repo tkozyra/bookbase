@@ -50,6 +50,10 @@
 }
 /**/
 
+.button-edit{
+
+}
+
 
 @media all and (max-width: 1100px) {
     .list-view.editing .toolbar,

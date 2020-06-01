@@ -5,8 +5,10 @@ import com.bookbase.backend.service.BookService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class AuthorDetails extends FormLayout {
 
@@ -14,8 +16,8 @@ public class AuthorDetails extends FormLayout {
     private final BookService bookService;
     private final AuthorsView authorsView;
 
-    private final Button editButton = new Button("edit");
-    private final Button closeButton = new Button("close");
+    private final Button buttonEdit = new Button("edit");
+    private final Button buttonClose = new Button("close");
 
     public AuthorDetails(AuthorsView authorsView, BookService bookService) {
         addClassName("author-details");
@@ -32,11 +34,21 @@ public class AuthorDetails extends FormLayout {
             Paragraph bookList = new Paragraph();
             bookService.findAll(this.author).forEach(book -> bookList.add(book.getTitle()));
 
-            editButton.addClickListener(e -> authorsView.editAuthor(this.author));
-            closeButton.addClickListener(e -> authorsView.closeDetails());
+            buttonEdit.addClickListener(e -> authorsView.editAuthor(this.author));
+            buttonEdit.addClassName("button-edit");
+            buttonClose.addClickListener(e -> authorsView.closeDetails());
+            buttonClose.addClassName("button-close");
+
+
+            Image authorImage = new Image("https://dummyimage.com/315x475/000/fff", "Author image");
+            authorImage.addClassName("book-cover-image");
+
+            if(author.getImage() != null){
+                authorImage = new Image(author.getImage(), "Author image");
+            }
 
             this.removeAll();
-            this.add(new HorizontalLayout(name, editButton, closeButton), birthYear, avgRating, bookList);
+            this.add(new HorizontalLayout(authorImage, new VerticalLayout(name, birthYear, avgRating, bookList, new HorizontalLayout(buttonEdit, buttonClose))));
         }
         else
             this.author = null;

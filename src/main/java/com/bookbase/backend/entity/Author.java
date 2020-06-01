@@ -82,9 +82,17 @@ public class Author {
         this.birthYear = birthYear;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public void addRating(int rating) {
         ratingSum += rating;
         ratingCount++;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     @Override

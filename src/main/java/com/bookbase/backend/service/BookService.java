@@ -117,6 +117,7 @@ public class BookService {
             List<Author> authors = new ArrayList<>();
 
             Author author1 = new Author("Stephen", "King", 1947);
+            author1.setImage("https://i.imgur.com/yTMM4ay.jpg");
             books.get(0).setAuthor(author1);
             books.get(1).setAuthor(author1);
             books.get(0).setCategory(categoryRepository.findCategoryByName("Horror"));
