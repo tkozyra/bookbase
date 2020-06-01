@@ -19,6 +19,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class BookForm extends FormLayout {
@@ -30,9 +31,9 @@ public class BookForm extends FormLayout {
     private TextArea description = new TextArea("Description");
     private IntegerField year = new IntegerField("Year");
 
-    private Button save = new Button("save");
-    private Button delete = new Button("delete");
-    private Button close = new Button("close");
+    private final Button save = new Button("save");
+    private final Button delete = new Button("delete");
+    private final Button close = new Button("close");
 
     private Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
@@ -43,9 +44,11 @@ public class BookForm extends FormLayout {
 
         author.setItems(authors);
         author.setItemLabelGenerator(Author::getFullName);
+        author.setRequired(true);
 
         category.setItems(categories);
         category.setItemLabelGenerator(Category::getName);
+        category.setRequired(true);
 
         add(
                 title,
@@ -73,7 +76,8 @@ public class BookForm extends FormLayout {
         delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));
         close.addClickListener(click -> fireEvent(new CloseEvent(this)));
 
-        binder.addStatusChangeListener(event -> save.setEnabled(binder.isValid()));
+        binder.addStatusChangeListener(event -> save.setEnabled(binder.isValid() && author.getValue()!=null
+        && category.getValue() != null));
 
         return new HorizontalLayout(save, delete, close);
     }

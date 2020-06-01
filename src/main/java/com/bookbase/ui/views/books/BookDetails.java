@@ -78,6 +78,7 @@ public class BookDetails extends VerticalLayout {
             this.book = null;
     }
 
+
     protected Book getCurrentBook() {
         return book;
     }
