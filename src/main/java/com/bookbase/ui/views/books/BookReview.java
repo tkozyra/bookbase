@@ -127,11 +127,6 @@ public class BookReview extends FormLayout {
         return book;
     }
 
-//    private void validateAndSave() {
-//        if (binder.isValid()) {
-//            fireEvent(new SaveEvent(this, binder.getBean()));
-//        }
-//    }
 
     // Events
     public static abstract class BookReviewEvent extends ComponentEvent<BookReview> {

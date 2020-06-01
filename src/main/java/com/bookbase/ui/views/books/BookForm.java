@@ -27,7 +27,7 @@ public class BookForm extends FormLayout {
 
     private TextField title = new TextField("Title");
     private ComboBox<Author> author = new ComboBox<>("Author");
-    private ComboBox<Category> category = new ComboBox<>("Category");
+    protected ComboBox<Category> category = new ComboBox<>("Category");
     private TextArea description = new TextArea("Description");
     private IntegerField year = new IntegerField("Year");
 
@@ -48,6 +48,7 @@ public class BookForm extends FormLayout {
 
         category.setItems(categories);
         category.setItemLabelGenerator(Category::getName);
+
         category.setRequired(true);
 
         add(
@@ -59,6 +60,7 @@ public class BookForm extends FormLayout {
                 createButtonsLayout()
         );
     }
+
 
     public void setBook(Book book){
         binder.setBean(book);

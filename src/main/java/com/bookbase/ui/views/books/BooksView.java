@@ -37,10 +37,11 @@ public class BooksView extends VerticalLayout {
 
     private final BookService bookService;
     private final AuthorService authorService;
-    private final CategoryService categoryService;
+    protected final CategoryService categoryService;
     protected final ReviewService reviewService;
 
     private final BookForm form;
+    private final CategoryForm categoryForm;
 
     private Paragraph title = new Paragraph("");
     private Paragraph author = new Paragraph("");
@@ -66,6 +67,12 @@ public class BooksView extends VerticalLayout {
         form.addListener(BookForm.DeleteEvent.class, this::deleteBook);
         form.addListener(BookForm.CloseEvent.class, event -> closeEditor());
 
+        categoryForm = new CategoryForm();
+        categoryForm.setVisible(false);
+        categoryForm.addListener(CategoryForm.SaveEvent.class, this::saveCategory);
+        categoryForm.addListener(CategoryForm.CloseEvent.class, event -> closeCategory());
+        categoryForm.addClassName("add-category");
+
         bookReview = new BookReview(this);
         bookReview.setVisible(false);
         bookReview.addClassName("add-review");
@@ -76,7 +83,7 @@ public class BooksView extends VerticalLayout {
         bookDetails = new BookDetails(this);
         bookDetails.addClassName("book-details");
 
-        Div content = new Div(grid, bookDetails, form, bookReview);
+        Div content = new Div(grid, bookDetails, form, categoryForm, bookReview);
         content.addClassName("content");
         content.setSizeFull();
 
@@ -101,7 +108,10 @@ public class BooksView extends VerticalLayout {
         Button bookButton = new Button("Add new book", buttonClickEvent -> addBook());
         bookButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        return new HorizontalLayout(filterText, categorySelect, clearButton, bookButton);
+        Button categoryButton = new Button("Add category", categoryClickEvent -> addCategory());
+        categoryButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        return new HorizontalLayout(filterText, categorySelect, clearButton, bookButton,categoryButton); //
     }
 
     private void configureSelect() {
@@ -215,7 +225,6 @@ public class BooksView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event -> switchDetails(event.getValue()));
-
     }
 
     private void switchDetails(Book book) {
@@ -266,6 +275,27 @@ public class BooksView extends VerticalLayout {
         bookService.save(review.getBook());
         authorService.save(review.getBook().getAuthor());
         reviewService.save(review);
-//        bookDetails.setDetails(bookDetails.getCurrentBook());
     }
+
+    private void addCategory(){
+        grid.asSingleSelect().clear();
+        bookDetails.setVisible(false);
+        bookReview.setVisible(false);
+        categoryForm.setVisible(true);
+    }
+
+    private void saveCategory(CategoryForm.SaveEvent event){
+        categoryService.save(event.getCategory());
+        updateList();
+        closeCategory();
+        categorySelect.setItems(categoryService.findAll());
+        form.category.setItems(categoryService.findAll());
+    }
+
+    private void closeCategory(){
+        categoryForm.setVisible(false);
+        bookReview.setVisible(false);
+        bookDetails.setVisible(false);
+    }
+
 }
