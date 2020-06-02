@@ -5,6 +5,11 @@ by [Tomasz Kozyra](https://github.com/tkozyra),
 [Kacper Rosiak](https://github.com/rosKacper) and
 [Wojciech Ankus](https://github.com/vojteq)
 
+## Demo
+
+Here is live working demo: http://bookbase3-env.eba-tbefkzvk.eu-central-1.elasticbeanstalk.com
+
+To gain access to app you have to log in. Ask administrator for login and password.
 
 ## About project
 In app you can **display** all authors or books and **rate** them.\
