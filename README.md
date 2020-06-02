@@ -29,7 +29,9 @@ After selecting item you can preview its details. If selected item is book, you 
   - Java Spring
   - Spring Boot JPA
   - Vaadin framework (Java)
-  
+  - MySQL
+ 
+ App is working on Amazon Web Services.
 
 
 
