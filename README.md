@@ -3,7 +3,7 @@
 is a web application :nerd_face: created with **Vaadin** framework (Java)
 by [Tomasz Kozyra](https://github.com/tkozyra),
 [Kacper Rosiak](https://github.com/rosKacper) and
-[Wojciech Ankus](https://github.com/vojteq)\
+[Wojciech Ankus](https://github.com/vojteq)
 
 
 ## About project
