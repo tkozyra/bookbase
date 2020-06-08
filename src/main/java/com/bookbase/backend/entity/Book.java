@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Book {
@@ -135,4 +136,24 @@ public class Book {
         ratingCount--;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return bookID == book.bookID &&
+                year == book.year &&
+                ratingSum == book.ratingSum &&
+                ratingCount == book.ratingCount &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(author, book.author) &&
+                Objects.equals(category, book.category) &&
+                Objects.equals(coverImage, book.coverImage) &&
+                Objects.equals(description, book.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookID, title, author, category, coverImage, description, year, ratingSum, ratingCount);
+    }
 }
