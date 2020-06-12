@@ -1,10 +1,12 @@
 package com.bookbase.backend.service;
 
+import com.bookbase.backend.entity.Book;
 import com.bookbase.backend.entity.Review;
 import com.bookbase.backend.repository.BookRepository;
 import com.bookbase.backend.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,15 @@ public class ReviewService {
 
     public List<Review> findAll(){
         return reviewRepository.findAll();
+    }
+
+    public List<Review> findAll(Book book) {
+        List<Review> reviews = new ArrayList<>();
+        for (Review r : findAll()) {
+            if (r.getBook().equals(book))
+                reviews.add(r);
+        }
+        return reviews.isEmpty() ? null : reviews;
     }
 
     public long count(){

@@ -131,6 +131,7 @@ public class BooksView extends VerticalLayout {
         bookService.save(event.getBook());
         updateList();
         closeEditor();
+        closeDetails();
     }
 
     private void saveReview(BookReview.SaveEvent event) {
@@ -154,13 +155,6 @@ public class BooksView extends VerticalLayout {
                 r.getBook().deleteReview(r);
                 reviewService.delete(r);
         }
-    }
-
-    private void closeEditor(){
-        form.setBook(null);
-        form.setVisible(false);
-        bookDetails.setVisible(false);
-        removeClassName("editing");
     }
 
     protected void editBook(Book book){
@@ -227,54 +221,24 @@ public class BooksView extends VerticalLayout {
         grid.asSingleSelect().addValueChangeListener(event -> switchDetails(event.getValue()));
     }
 
-    private void switchDetails(Book book) {
-//        if (book == null || (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook())))
-//            closeDetails();
-        if (book == null) {
-            closeDetails();
-            closeReview();
-        }
-        else if (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook()))
-            closeDetails();
-        else if (bookReview.isVisible() && book.equals(bookReview.getBook()))
-            closeReview();
-        else {
-            closeReview();
-            bookDetails.setDetails(book);
-            closeEditor();
-            bookDetails.setVisible(true);
-        }
-    }
-
-    protected void closeDetails() {
-        bookDetails.setVisible(false);
-        bookDetails.setDetails(null);
-        grid.deselectAll();
-    }
-
     protected void createReview(Book book) {
         if (book == null)
             closeReview();
         else {
-//            switchDetails(book);
             bookDetails.setVisible(false);
             bookReview.setVisible(true);
-//            bookReview.addReview(book);
             bookReview.setBook(book);
         }
     }
 
-    private void closeReview(){
-        bookReview.setVisible(false);
-        bookReview.setBook(null);
-        bookDetails.setVisible(true);
-    }
-
     protected void addReview(Review review) {
-        closeReview();
         bookService.save(review.getBook());
         authorService.save(review.getBook().getAuthor());
         reviewService.save(review);
+        grid.setItems(bookService.findAll());
+        bookDetails.setDetails(bookDetails.getCurrentBook());
+        bookDetails.setVisible(true);
+        closeReview();
     }
 
     private void addCategory(){
@@ -298,4 +262,39 @@ public class BooksView extends VerticalLayout {
         bookDetails.setVisible(false);
     }
 
+    private void closeReview(){
+        bookReview.setVisible(false);
+        bookDetails.setVisible(true);
+        bookReview.setBook(null);
+    }
+
+    protected void closeDetails() {
+        bookDetails.setVisible(false);
+//        bookDetails.setDetails(null);
+//        grid.deselectAll();
+    }
+
+    private void closeEditor(){
+        form.setBook(null);
+        form.setVisible(false);
+        bookDetails.setVisible(true);
+        removeClassName("editing");
+    }
+
+    private void switchDetails(Book book) {
+        if (book == null) {
+            closeDetails();
+            closeReview();
+        }
+        else if (bookDetails.isVisible() && book.equals(bookDetails.getCurrentBook()))
+            closeDetails();
+        else if (bookReview.isVisible() && book.equals(bookReview.getBook()))
+            closeReview();
+        else {
+            closeReview();
+            bookDetails.setDetails(book);
+            closeEditor();
+            bookDetails.setVisible(true);
+        }
+    }
 }
