@@ -6,6 +6,7 @@ import com.bookbase.ui.views.home.HomeView;
 import com.bookbase.ui.views.login.LoginView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -46,12 +47,12 @@ public class MainLayout extends AppLayout {
         authors.addClassName("navbar-link");
         authors.addComponentAsFirst(authorIcon);
 
-//        Icon signOutIcon = new Icon(VaadinIcon.SIGN_OUT_ALT);
-//        Tab signOut = new Tab(new RouterLink("Sign Out", LoginView.class));
-//        signOut.addClassName("navbar-link");
-//        signOut.addComponentAsFirst(signOutIcon);
+        Icon signOutIcon = new Icon(VaadinIcon.SIGN_OUT_ALT);
+        Tab signOut = new Tab(new Anchor("/logout", "Log out"));
+        signOut.addClassName("navbar-link");
+        signOut.addComponentAsFirst(signOutIcon);
 
-        Tabs tabs = new Tabs(home, books, authors);
+        Tabs tabs = new Tabs(home, books, authors, signOut);
         centeredLayout.add(tabs);
         addToNavbar(false, logo, centeredLayout);
     }
