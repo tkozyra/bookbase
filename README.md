@@ -1,10 +1,10 @@
-# [documentation](https://github.com/tkozyra/bookbase/blob/master/Bookbase%20-%20dokumentacja.pdf)
 # bookbase
 [**Bookbase**](http://bookbase3-env.eba-tbefkzvk.eu-central-1.elasticbeanstalk.com)
 is a web application :nerd_face: created with **Vaadin** framework (Java)
 by [Tomasz Kozyra](https://github.com/tkozyra),
 [Kacper Rosiak](https://github.com/rosKacper) and
-[Wojciech Ankus](https://github.com/vojteq)
+[Wojciech Ankus](https://github.com/vojteq).\
+Here you can see the [**documentation**](https://github.com/tkozyra/bookbase/blob/master/Bookbase%20-%20dokumentacja.pdf)
 
 ## Demo
 
