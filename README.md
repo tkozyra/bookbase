@@ -1,20 +1,26 @@
 # bookbase
 [**Bookbase**](http://bookbase3-env.eba-tbefkzvk.eu-central-1.elasticbeanstalk.com)
-is a web application :nerd_face: created with **Vaadin** framework (Java)
-by [Tomasz Kozyra](https://github.com/tkozyra),
-[Kacper Rosiak](https://github.com/rosKacper) and
-[Wojciech Ankus](https://github.com/vojteq).\
-Here you can see the [**documentation**](https://github.com/tkozyra/bookbase/blob/master/Bookbase%20-%20dokumentacja.pdf)
+is a web application created with **Spring Boot** and **Vaadin** framework.
 
-## Demo
+Project was developed by:
+- [Tomasz Kozyra](https://github.com/tkozyra),
+- [Kacper Rosiak](https://github.com/rosKacper),
+- [Wojciech Ankus](https://github.com/vojteq)
 
-Here is live working demo: http://bookbase-env.eba-cibi9f5f.eu-central-1.elasticbeanstalk.com/
+## Table of Contents
 
-To gain access to app you have to log in. Ask administrator for login and password.
+- [About project](#about-project)
+- [Technologies](#technologies)
+- [Project overview](#project-overview)
 
 ## About project
-In app you can **display** all authors or books and **rate** them.\
-Items can be **sorted** and **filtered**:
+
+To gain access to application, you have to log in with given credentials:
+- username: user
+- password: ala123
+
+
+In app you can display all authors or books and rate them. Items can be **sorted** and **filtered**:
 - alphabetically
 - by date
 - by category
@@ -22,14 +28,37 @@ Items can be **sorted** and **filtered**:
 
 
 There are also forms to **add/edit** books, authors or categories.
+
 After selecting item you can preview its details. If selected item is book, you can rate it.
  
  
 ## Technologies
 
-  - Java Spring
-  - Vaadin framework (Java)
-  - Spring Boot JPA
-  - MySQL
+  - Java 14
+  - Spring Boot version 2.2.0
+  - Vaadin framework
 
- App is working on Amazon Web Services.
+
+## Project overview
+
+Books view in application:
+
+
+<img src="readme-images/books.jpg" alt="drawing" width="600"/>
+
+<br>
+
+Authors view in application:
+
+
+<img src="readme-images/authors-view.jpg" alt="drawing" width="600"/>
+
+<br>
+
+
+Books view with displayed ratings and reviews:
+
+
+<img src="readme-images/books-reviews.jpg" alt="drawing" width="600"/>
+
+<br>
